@@ -1,0 +1,568 @@
+{% extends "base.html" %}
+
+{% block title %}Request Details - TransLink{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="mb-4">
+
+        <a
+            href="{{ url_for('requests.my_requests') }}"
+            class="text-decoration-none text-muted"
+        >
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to My Requests
+        </a>
+
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mt-3">
+
+            <div>
+                <h2 class="fw-bold mb-1">
+                    Transport Request #{{ transport_request.id }}
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Review your request and available truck matches.
+                </p>
+            </div>
+
+            <div class="mt-3 mt-md-0">
+
+                {% if transport_request.status == "Pending" %}
+
+                    <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+                        Pending
+                    </span>
+
+                {% elif transport_request.status == "Matched" %}
+
+                    <span class="badge bg-primary fs-6 px-3 py-2">
+                        Matched
+                    </span>
+
+                {% elif transport_request.status == "Sent" %}
+
+                    <span class="badge bg-info text-dark fs-6 px-3 py-2">
+                        Booking Sent
+                    </span>
+
+                {% elif transport_request.status == "Accepted" %}
+
+                    <span class="badge bg-success fs-6 px-3 py-2">
+                        Accepted
+                    </span>
+
+                {% elif transport_request.status == "Rejected" %}
+
+                    <span class="badge bg-danger fs-6 px-3 py-2">
+                        Rejected
+                    </span>
+
+                {% elif transport_request.status == "Cancelled" %}
+
+                    <span class="badge bg-secondary fs-6 px-3 py-2">
+                        Cancelled
+                    </span>
+
+                {% elif transport_request.status == "In Transit" %}
+
+                    <span class="badge bg-primary fs-6 px-3 py-2">
+                        In Transit
+                    </span>
+
+                {% elif transport_request.status == "Completed" %}
+
+                    <span class="badge bg-success fs-6 px-3 py-2">
+                        Completed
+                    </span>
+
+                {% else %}
+
+                    <span class="badge bg-secondary fs-6 px-3 py-2">
+                        {{ transport_request.status }}
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Request Summary -->
+
+    <div class="card border-0 shadow-sm mb-5">
+
+        <div class="card-body p-4">
+
+            <h5 class="fw-bold mb-4">
+                <i class="bi bi-file-earmark-text me-2 text-warning"></i>
+                Request Information
+            </h5>
+
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+
+                    <div class="summary-item">
+
+                        <small>
+                            Goods
+                        </small>
+
+                        <strong>
+                            {{ transport_request.goods_type }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="summary-item">
+
+                        <small>
+                            Quantity
+                        </small>
+
+                        <strong>
+                            {{ transport_request.quantity }}
+                            {{ transport_request.quantity_unit }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="summary-item">
+
+                        <small>
+                            Pickup Location
+                        </small>
+
+                        <strong>
+                            <i class="bi bi-geo-alt text-danger me-1"></i>
+                            {{ transport_request.pickup_location }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="summary-item">
+
+                        <small>
+                            Destination
+                        </small>
+
+                        <strong>
+                            <i class="bi bi-geo-alt-fill text-success me-1"></i>
+                            {{ transport_request.destination }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="summary-item">
+
+                        <small>
+                            Required Date
+                        </small>
+
+                        <strong>
+                            {{ transport_request.required_date.strftime("%d %B %Y") }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="summary-item">
+
+                        <small>
+                            Required Truck Type
+                        </small>
+
+                        <strong>
+                            {{ transport_request.truck_type_required or "Any suitable truck" }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                {% if transport_request.description %}
+
+                <div class="col-12">
+
+                    <div class="summary-item">
+
+                        <small>
+                            Additional Information
+                        </small>
+
+                        <strong>
+                            {{ transport_request.description }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Matching Section -->
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <div>
+
+            <h4 class="fw-bold mb-1">
+                Smart Truck Matches
+            </h4>
+
+            <p class="text-muted mb-0">
+                Trucks selected based on capacity, location, availability,
+                type, destination and date.
+            </p>
+
+        </div>
+
+        <span class="badge bg-success fs-6">
+            {{ matches|length }} Match{% if matches|length != 1 %}es{% endif %}
+        </span>
+
+    </div>
+
+
+    {% if matches %}
+
+        <div class="row g-4">
+
+            {% for match in matches %}
+
+            <div class="col-lg-6">
+
+                <div class="truck-match-card h-100">
+
+                    <!-- Match Header -->
+
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+
+                        <div class="d-flex align-items-center gap-3">
+
+                            <div class="truck-match-icon">
+                                <i class="bi bi-truck"></i>
+                            </div>
+
+                            <div>
+
+                                <h5 class="fw-bold mb-1">
+                                    {{ match.truck.truck_name }}
+                                </h5>
+
+                                <small class="text-muted">
+                                    {{ match.truck.truck_type }}
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="text-end">
+
+                            <div class="match-score">
+                                {{ match.match_score|int }}%
+                            </div>
+
+                            <small class="text-muted">
+                                Match
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Truck Details -->
+
+                    <div class="row g-3 mb-4">
+
+                        <div class="col-6">
+
+                            <div class="match-detail">
+
+                                <i class="bi bi-speedometer2"></i>
+
+                                <div>
+
+                                    <small>
+                                        Capacity
+                                    </small>
+
+                                    <strong>
+                                        {{ match.truck.capacity }}
+                                        {{ match.truck.capacity_unit }}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-6">
+
+                            <div class="match-detail">
+
+                                <i class="bi bi-circle-fill text-success"></i>
+
+                                <div>
+
+                                    <small>
+                                        Availability
+                                    </small>
+
+                                    <strong>
+                                        {{ match.truck.availability }}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-12">
+
+                            <div class="match-detail">
+
+                                <i class="bi bi-geo-alt"></i>
+
+                                <div>
+
+                                    <small>
+                                        Current Location
+                                    </small>
+
+                                    <strong>
+                                        {{ match.truck.current_location }}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {% if match.truck.destination_area %}
+
+                        <div class="col-12">
+
+                            <div class="match-detail">
+
+                                <i class="bi bi-signpost-2"></i>
+
+                                <div>
+
+                                    <small>
+                                        Preferred Destination
+                                    </small>
+
+                                    <strong>
+                                        {{ match.truck.destination_area }}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Match Reasons -->
+
+                    <div class="mb-4">
+
+                        <small class="fw-semibold text-muted d-block mb-2">
+                            Why this truck matches
+                        </small>
+
+                        <div class="match-reasons">
+
+                            {% if match.capacity_score >= 25 %}
+                                <span>
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Suitable Capacity
+                                </span>
+                            {% endif %}
+
+
+                            {% if match.location_score >= 15 %}
+                                <span>
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Near Pickup
+                                </span>
+                            {% endif %}
+
+
+                            {% if match.availability_score > 0 %}
+                                <span>
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Available
+                                </span>
+                            {% endif %}
+
+
+                            {% if match.truck_type_score >= 15 %}
+                                <span>
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Truck Type Match
+                                </span>
+                            {% endif %}
+
+
+                            {% if match.destination_score >= 7 %}
+                                <span>
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Destination Match
+                                </span>
+                            {% endif %}
+
+
+                            {% if match.date_score > 0 %}
+                                <span>
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Date Compatible
+                                </span>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BOOKING BUTTON -->
+
+                    {% set existing_booking = match.truck.bookings
+                        | selectattr("request_id", "equalto", transport_request.id)
+                        | list
+                    %}
+
+
+                    {% if existing_booking %}
+
+                        <button
+                            class="btn btn-secondary fw-semibold w-100"
+                            disabled
+                        >
+                            <i class="bi bi-check-circle me-2"></i>
+                            Request Already Sent
+                        </button>
+
+                    {% elif match.truck.availability != "Available" %}
+
+                        <button
+                            class="btn btn-secondary fw-semibold w-100"
+                            disabled
+                        >
+                            <i class="bi bi-x-circle me-2"></i>
+                            Truck Not Available
+                        </button>
+
+                    {% else %}
+
+                        <form
+                            method="POST"
+                            action="{{ url_for(
+                                'bookings.create_booking',
+                                request_id=transport_request.id,
+                                truck_id=match.truck.id
+                            ) }}"
+                            onsubmit="return confirm('Send a booking request to this truck owner?');"
+                        >
+
+                            <button
+                                type="submit"
+                                class="btn btn-warning fw-semibold w-100"
+                            >
+                                <i class="bi bi-send me-2"></i>
+                                Request This Truck
+                            </button>
+
+                        </form>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body text-center py-5">
+
+                <i class="bi bi-truck display-3 text-muted"></i>
+
+                <h4 class="fw-bold mt-3">
+                    No Suitable Trucks Found
+                </h4>
+
+                <p class="text-muted mb-0">
+                    There are currently no available trucks that match
+                    your transportation requirements.
+                </p>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

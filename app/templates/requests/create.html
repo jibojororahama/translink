@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}New Transport Request - TransLink{% endblock %}
+
+{% block content %}
+
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-xl-9">
+
+                <div class="mb-4">
+
+                    <a
+                        href="{{ url_for('trader.dashboard') }}"
+                        class="text-decoration-none text-muted">
+
+                        <i class="bi bi-arrow-left me-2"></i>
+                        Back to Dashboard
+
+                    </a>
+
+                    <h2 class="fw-bold mt-3 mb-1">
+                        Create Transport Request
+                    </h2>
+
+                    <p class="text-muted">
+                        Tell us what you need transported and where it needs
+                        to go.
+                    </p>
+
+                </div>
+
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-body p-4 p-md-5">
+
+                        <form method="POST">
+
+                            <!-- GOODS INFORMATION -->
+                            <h5 class="fw-bold mb-4">
+                                <i class="bi bi-box-seam text-warning me-2"></i>
+                                Goods Information
+                            </h5>
+
+                            <div class="row g-3">
+
+                                <div class="col-md-7">
+
+                                    <label class="form-label fw-semibold">
+                                        Type of Goods
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="goods_type"
+                                        class="form-control"
+                                        placeholder="e.g. Cement, Rice, Furniture"
+                                        required>
+
+                                </div>
+
+
+                                <div class="col-md-3">
+
+                                    <label class="form-label fw-semibold">
+                                        Quantity / Weight
+                                    </label>
+
+                                    <input
+                                        type="number"
+                                        name="quantity"
+                                        class="form-control"
+                                        min="0.1"
+                                        step="0.1"
+                                        placeholder="10"
+                                        required>
+
+                                </div>
+
+
+                                <div class="col-md-2">
+
+                                    <label class="form-label fw-semibold">
+                                        Unit
+                                    </label>
+
+                                    <select
+                                        name="quantity_unit"
+                                        class="form-select">
+
+                                        <option value="tons">
+                                            Tons
+                                        </option>
+
+                                        <option value="kg">
+                                            KG
+                                        </option>
+
+                                        <option value="bags">
+                                            Bags
+                                        </option>
+
+                                        <option value="units">
+                                            Units
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+
+                            <hr class="my-5">
+
+
+                            <!-- LOCATION -->
+                            <h5 class="fw-bold mb-4">
+                                <i class="bi bi-geo-alt text-warning me-2"></i>
+                                Transportation Route
+                            </h5>
+
+                            <div class="row g-3">
+
+                                <div class="col-md-6">
+
+                                    <label class="form-label fw-semibold">
+                                        Pickup Location
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="pickup_location"
+                                        class="form-control"
+                                        placeholder="e.g. Jos, Plateau State"
+                                        required>
+
+                                    <small class="text-muted">
+                                        Enter a location within Nigeria.
+                                    </small>
+
+                                </div>
+
+
+                                <div class="col-md-6">
+
+                                    <label class="form-label fw-semibold">
+                                        Destination
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="destination"
+                                        class="form-control"
+                                        placeholder="e.g. Abuja, FCT"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                            <hr class="my-5">
+
+
+                            <!-- TRUCK REQUIREMENTS -->
+                            <h5 class="fw-bold mb-4">
+                                <i class="bi bi-truck text-warning me-2"></i>
+                                Truck Requirements
+                            </h5>
+
+                            <div class="row g-3">
+
+                                <div class="col-md-6">
+
+                                    <label class="form-label fw-semibold">
+                                        Required Truck Type
+                                    </label>
+
+                                    <select
+                                        name="truck_type_required"
+                                        class="form-select">
+
+                                        <option value="">
+                                            Any suitable truck
+                                        </option>
+
+                                        <option value="Flatbed">
+                                            Flatbed
+                                        </option>
+
+                                        <option value="Box Truck">
+                                            Box Truck
+                                        </option>
+
+                                        <option value="Tipper">
+                                            Tipper
+                                        </option>
+
+                                        <option value="Tanker">
+                                            Tanker
+                                        </option>
+
+                                        <option value="Refrigerated Truck">
+                                            Refrigerated Truck
+                                        </option>
+
+                                        <option value="Trailer">
+                                            Trailer
+                                        </option>
+
+                                        <option value="Cargo Truck">
+                                            Cargo Truck
+                                        </option>
+
+                                        <option value="Other">
+                                            Other
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div class="col-md-6">
+
+                                    <label class="form-label fw-semibold">
+                                        Required Transportation Date
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        name="required_date"
+                                        class="form-control"
+                                        required>
+
+                                </div>
+
+
+                                <div class="col-12">
+
+                                    <label class="form-label fw-semibold">
+                                        Additional Information
+                                    </label>
+
+                                    <textarea
+                                        name="description"
+                                        class="form-control"
+                                        rows="4"
+                                        placeholder="Add any special requirements or information about the goods..."></textarea>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ACTIONS -->
+                            <div class="d-flex justify-content-between align-items-center mt-5">
+
+                                <a
+                                    href="{{ url_for('trader.dashboard') }}"
+                                    class="btn btn-outline-secondary">
+
+                                    Cancel
+
+                                </a>
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-warning px-4 fw-bold">
+
+                                    <i class="bi bi-search me-2"></i>
+
+                                    Find Suitable Trucks
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

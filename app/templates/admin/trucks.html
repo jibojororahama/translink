@@ -1,0 +1,418 @@
+{% extends "base.html" %}
+
+{% block title %}Truck Management - TransLink{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+        <div>
+            <span class="badge bg-warning text-dark mb-2">
+                <i class="bi bi-shield-check me-1"></i>
+                Administrator
+            </span>
+
+            <h2 class="fw-bold mb-1">
+                Truck Management
+            </h2>
+
+            <p class="text-muted mb-0">
+                Monitor and manage all trucks registered on TransLink.
+            </p>
+        </div>
+
+        <a href="{{ url_for('admin.dashboard') }}"
+           class="btn btn-outline-dark">
+            <i class="bi bi-arrow-left me-1"></i>
+            Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- SEARCH AND FILTERS -->
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+
+            <form method="GET"
+                  action="{{ url_for('admin.trucks') }}">
+
+                <div class="row g-3">
+
+                    <div class="col-lg-5">
+
+                        <label class="form-label fw-semibold">
+                            Search
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-search"></i>
+                            </span>
+
+                            <input
+                                type="text"
+                                name="search"
+                                value="{{ search }}"
+                                class="form-control"
+                                placeholder="Truck name, registration, location or owner"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-lg-3">
+
+                        <label class="form-label fw-semibold">
+                            Availability
+                        </label>
+
+                        <select
+                            name="availability"
+                            class="form-select">
+
+                            <option value="">
+                                All statuses
+                            </option>
+
+                            <option value="Available"
+                                {% if availability == "Available" %}selected{% endif %}>
+                                Available
+                            </option>
+
+                            <option value="Booked"
+                                {% if availability == "Booked" %}selected{% endif %}>
+                                Booked
+                            </option>
+
+                            <option value="Unavailable"
+                                {% if availability == "Unavailable" %}selected{% endif %}>
+                                Unavailable
+                            </option>
+
+                            <option value="Maintenance"
+                                {% if availability == "Maintenance" %}selected{% endif %}>
+                                Maintenance
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="col-lg-2">
+
+                        <label class="form-label fw-semibold">
+                            Truck Type
+                        </label>
+
+                        <select
+                            name="truck_type"
+                            class="form-select">
+
+                            <option value="">
+                                All types
+                            </option>
+
+                            <option value="Flatbed"
+                                {% if truck_type == "Flatbed" %}selected{% endif %}>
+                                Flatbed
+                            </option>
+
+                            <option value="Box Truck"
+                                {% if truck_type == "Box Truck" %}selected{% endif %}>
+                                Box Truck
+                            </option>
+
+                            <option value="Tipper"
+                                {% if truck_type == "Tipper" %}selected{% endif %}>
+                                Tipper
+                            </option>
+
+                            <option value="Tanker"
+                                {% if truck_type == "Tanker" %}selected{% endif %}>
+                                Tanker
+                            </option>
+
+                            <option value="Trailer"
+                                {% if truck_type == "Trailer" %}selected{% endif %}>
+                                Trailer
+                            </option>
+
+                            <option value="Cargo Truck"
+                                {% if truck_type == "Cargo Truck" %}selected{% endif %}>
+                                Cargo Truck
+                            </option>
+
+                            <option value="Refrigerated Truck"
+                                {% if truck_type == "Refrigerated Truck" %}selected{% endif %}>
+                                Refrigerated Truck
+                            </option>
+
+                            <option value="Other"
+                                {% if truck_type == "Other" %}selected{% endif %}>
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="col-lg-2 d-flex align-items-end">
+
+                        <div class="d-grid w-100">
+
+                            <button
+                                type="submit"
+                                class="btn btn-dark">
+
+                                <i class="bi bi-funnel me-1"></i>
+                                Filter
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- TRUCK TABLE -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white border-0 p-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+                    <h5 class="fw-bold mb-1">
+                        Registered Trucks
+                    </h5>
+
+                    <p class="text-muted small mb-0">
+                        {{ trucks|length }} truck(s) found
+                    </p>
+                </div>
+
+                <i class="bi bi-truck fs-2 text-warning"></i>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>Truck</th>
+                        <th>Owner</th>
+                        <th>Type</th>
+                        <th>Capacity</th>
+                        <th>Location</th>
+                        <th>Availability</th>
+                        <th>Registered</th>
+                        <th class="text-end">Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for truck in trucks %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <div class="admin-truck-icon">
+                                    <i class="bi bi-truck"></i>
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        {{ truck.truck_name }}
+                                    </strong>
+
+                                    {% if truck.registration_number %}
+                                        <small class="d-block text-muted">
+                                            {{ truck.registration_number }}
+                                        </small>
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+                            {{ truck.owner.full_name }}
+                        </td>
+
+
+                        <td>
+                            <span class="badge bg-light text-dark border">
+                                {{ truck.truck_type }}
+                            </span>
+                        </td>
+
+
+                        <td>
+                            <strong>
+                                {{ truck.capacity }}
+                            </strong>
+                            <small class="text-muted">
+                                tons
+                            </small>
+                        </td>
+
+
+                        <td>
+                            <i class="bi bi-geo-alt text-warning me-1"></i>
+                            {{ truck.current_location }}
+                        </td>
+
+
+                        <td>
+
+                            {% if truck.availability == "Available" %}
+
+                                <span class="badge bg-success">
+                                    Available
+                                </span>
+
+                            {% elif truck.availability == "Booked" %}
+
+                                <span class="badge bg-primary">
+                                    Booked
+                                </span>
+
+                            {% elif truck.availability == "Maintenance" %}
+
+                                <span class="badge bg-warning text-dark">
+                                    Maintenance
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    Unavailable
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+                            <small class="text-muted">
+                                {{ truck.created_at.strftime("%d %b %Y") }}
+                            </small>
+                        </td>
+
+
+                        <td class="text-end">
+
+                            {% if truck.availability == "Unavailable" %}
+
+                                <form
+                                    method="POST"
+                                    action="{{ url_for('admin.toggle_truck', truck_id=truck.id) }}"
+                                    class="d-inline">
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-sm btn-outline-success">
+
+                                        <i class="bi bi-check-circle me-1"></i>
+                                        Activate
+
+                                    </button>
+
+                                </form>
+
+                            {% else %}
+
+                                <form
+                                    method="POST"
+                                    action="{{ url_for('admin.toggle_truck', truck_id=truck.id) }}"
+                                    class="d-inline">
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-sm btn-outline-danger">
+
+                                        <i class="bi bi-slash-circle me-1"></i>
+                                        Disable
+
+                                    </button>
+
+                                </form>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="8"
+                            class="text-center py-5">
+
+                            <div class="empty-notification-icon mx-auto mb-3">
+                                <i class="bi bi-truck"></i>
+                            </div>
+
+                            <h5 class="fw-bold">
+                                No trucks found
+                            </h5>
+
+                            <p class="text-muted mb-0">
+                                No trucks match your current search or filters.
+                            </p>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

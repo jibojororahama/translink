@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account - TransLink{% endblock %}
+
+{% block content %}
+
+<section class="auth-section py-5">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-7 col-xl-6">
+
+                <div class="card border-0 shadow-lg auth-card">
+
+                    <div class="card-body p-4 p-md-5">
+
+                        <div class="text-center mb-4">
+
+                            <div class="auth-icon mb-3">
+                                <i class="bi bi-person-plus-fill"></i>
+                            </div>
+
+                            <h2 class="fw-bold">
+                                Create Your TransLink Account
+                            </h2>
+
+                            <p class="text-muted">
+                                Join Nigeria's smarter transportation network.
+                            </p>
+
+                        </div>
+
+
+                        <form method="POST">
+
+                            <!-- FULL NAME -->
+                            <div class="mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Full Name
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        <i class="bi bi-person"></i>
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        name="full_name"
+                                        class="form-control"
+                                        placeholder="Enter your full name"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- EMAIL -->
+                            <div class="mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Email Address
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        <i class="bi bi-envelope"></i>
+                                    </span>
+
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        class="form-control"
+                                        placeholder="you@example.com"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PHONE -->
+                            <div class="mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Phone Number
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        <i class="bi bi-telephone"></i>
+                                    </span>
+
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        class="form-control"
+                                        placeholder="08012345678"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ROLE -->
+                            <div class="mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Account Type
+                                </label>
+
+                                <select
+                                    name="role"
+                                    class="form-select"
+                                    required>
+
+                                    <option value="">
+                                        Select account type
+                                    </option>
+
+                                    <option value="trader">
+                                        Trader / Business Owner
+                                    </option>
+
+                                    <option value="owner">
+                                        Truck Owner
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- PASSWORD -->
+                            <div class="mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Password
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        <i class="bi bi-lock"></i>
+                                    </span>
+
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        class="form-control"
+                                        placeholder="Minimum 6 characters"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CONFIRM PASSWORD -->
+                            <div class="mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Confirm Password
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        <i class="bi bi-shield-lock"></i>
+                                    </span>
+
+                                    <input
+                                        type="password"
+                                        name="confirm_password"
+                                        class="form-control"
+                                        placeholder="Repeat your password"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- SUBMIT -->
+                            <button
+                                type="submit"
+                                class="btn btn-warning w-100 py-3 fw-bold">
+
+                                <i class="bi bi-person-check-fill me-2"></i>
+
+                                Create Account
+
+                            </button>
+
+                        </form>
+
+
+                        <div class="text-center mt-4">
+
+                            <span class="text-muted">
+                                Already have an account?
+                            </span>
+
+                            <a
+                                href="{{ url_for('auth.login') }}"
+                                class="fw-semibold text-decoration-none">
+
+                                Login here
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

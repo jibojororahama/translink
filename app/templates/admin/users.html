@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block title %}User Management | TransLink{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid px-4 py-4">
+
+    <!-- HEADER -->
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <span class="badge bg-dark mb-2">
+                ADMINISTRATION
+            </span>
+
+            <h2 class="fw-bold mb-1">
+                User Management
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage traders, truck owners and administrator accounts.
+            </p>
+
+        </div>
+
+        <a
+            href="{{ url_for('admin.dashboard') }}"
+            class="btn btn-outline-dark">
+
+            <i class="bi bi-arrow-left me-2"></i>
+            Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!-- USERS TABLE -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th class="px-4">
+                                User
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Phone
+                            </th>
+
+                            <th>
+                                Role
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Registered
+                            </th>
+
+                            <th class="text-end px-4">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for user in users %}
+
+                        <tr>
+
+                            <td class="px-4">
+
+                                <div class="d-flex align-items-center gap-3">
+
+                                    <div class="admin-user-avatar">
+
+                                        {% if user.role == "trader" %}
+
+                                            <i class="bi bi-person"></i>
+
+                                        {% elif user.role == "owner" %}
+
+                                            <i class="bi bi-truck"></i>
+
+                                        {% else %}
+
+                                            <i class="bi bi-shield-check"></i>
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <div class="fw-semibold">
+                                            {{ user.full_name }}
+                                        </div>
+
+                                        <small class="text-muted">
+                                            ID #{{ user.id }}
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <td>
+                                {{ user.email }}
+                            </td>
+
+
+                            <td>
+                                {{ user.phone }}
+                            </td>
+
+
+                            <td>
+
+                                {% if user.role == "trader" %}
+
+                                    <span class="badge bg-primary">
+                                        Trader
+                                    </span>
+
+                                {% elif user.role == "owner" %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        Truck Owner
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-dark">
+                                        Administrator
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if user.is_active %}
+
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle me-1"></i>
+                                        Active
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-danger">
+                                        <i class="bi bi-x-circle me-1"></i>
+                                        Inactive
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {{ user.created_at.strftime('%d %b %Y') }}
+
+                            </td>
+
+
+                            <td class="text-end px-4">
+
+                                {% if user.id != session.get("user_id") %}
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for(
+                                            'admin.toggle_user',
+                                            user_id=user.id
+                                        ) }}"
+                                        onsubmit="return confirm(
+                                            'Are you sure you want to change this user account status?'
+                                        );">
+
+                                        {% if user.is_active %}
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-sm btn-outline-danger">
+
+                                                <i class="bi bi-person-x me-1"></i>
+                                                Deactivate
+
+                                            </button>
+
+                                        {% else %}
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-sm btn-outline-success">
+
+                                                <i class="bi bi-person-check me-1"></i>
+                                                Activate
+
+                                            </button>
+
+                                        {% endif %}
+
+                                    </form>
+
+                                {% else %}
+
+                                    <span class="text-muted small">
+                                        Current account
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                class="text-center py-5 text-muted">
+
+                                <i class="bi bi-people fs-1 d-block mb-3"></i>
+
+                                No users found.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

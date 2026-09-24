@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Activity Log - TransLink{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- HEADER -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+        <div>
+            <span class="badge bg-warning text-dark mb-2">
+                <i class="bi bi-shield-check me-1"></i>
+                Administrator
+            </span>
+
+            <h2 class="fw-bold mb-1">
+                Activity Log
+            </h2>
+
+            <p class="text-muted mb-0">
+                Monitor important administrative actions performed on TransLink.
+            </p>
+        </div>
+
+        <a href="{{ url_for('admin.dashboard') }}"
+           class="btn btn-outline-dark">
+
+            <i class="bi bi-arrow-left me-1"></i>
+            Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="activity-summary-icon mb-3">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+
+                    <small class="text-muted">
+                        Displayed Activities
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        {{ activities|length }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="activity-summary-icon mb-3">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+
+                    <small class="text-muted">
+                        Security Monitoring
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        Active
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="activity-summary-icon mb-3">
+                        <i class="bi bi-database-check"></i>
+                    </div>
+
+                    <small class="text-muted">
+                        Audit System
+                    </small>
+
+                    <h3 class="fw-bold mb-0">
+                        Enabled
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ACTIVITY TABLE -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white border-0 p-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5 class="fw-bold mb-1">
+                        Administrative Activities
+                    </h5>
+
+                    <p class="text-muted small mb-0">
+                        Latest administrative actions are shown below.
+                    </p>
+
+                </div>
+
+                <div class="activity-header-icon">
+                    <i class="bi bi-list-check"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {% if activities %}
+
+        <div class="activity-list">
+
+            {% for activity in activities %}
+
+            <div class="activity-item">
+
+                <div class="activity-icon">
+
+                    {% if "User" in activity.action %}
+
+                        <i class="bi bi-person-gear"></i>
+
+                    {% elif "Truck" in activity.action %}
+
+                        <i class="bi bi-truck"></i>
+
+                    {% elif "Booking" in activity.action %}
+
+                        <i class="bi bi-calendar-check"></i>
+
+                    {% elif "Request" in activity.action %}
+
+                        <i class="bi bi-box-seam"></i>
+
+                    {% else %}
+
+                        <i class="bi bi-shield-check"></i>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="activity-content">
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+
+                        <div>
+
+                            <h6 class="fw-bold mb-1">
+                                {{ activity.action }}
+                            </h6>
+
+                            <p class="text-muted mb-0">
+                                {{ activity.description or "Administrative activity recorded." }}
+                            </p>
+
+                        </div>
+
+
+                        <div class="activity-time">
+
+                            <i class="bi bi-clock me-1"></i>
+
+                            {{ activity.created_at.strftime("%d %b %Y, %I:%M %p") }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="text-center py-5">
+
+            <div class="empty-notification-icon mx-auto mb-3">
+
+                <i class="bi bi-clock-history"></i>
+
+            </div>
+
+            <h5 class="fw-bold">
+                No activity recorded yet
+            </h5>
+
+            <p class="text-muted mb-0">
+                Administrative actions will appear here automatically.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

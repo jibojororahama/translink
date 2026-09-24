@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookings - TransLink{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="mb-4">
+
+        <a
+            href="{{ url_for('trader.dashboard') }}"
+            class="text-decoration-none text-muted"
+        >
+            <i class="bi bi-arrow-left me-1"></i>
+            Dashboard
+        </a>
+
+        <h2 class="fw-bold mt-3 mb-1">
+            My Bookings
+        </h2>
+
+        <p class="text-muted">
+            Track your truck booking requests.
+        </p>
+
+    </div>
+
+
+    {% if bookings %}
+
+    <div class="row g-4">
+
+        {% for booking in bookings %}
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between mb-3">
+
+                        <div>
+
+                            <small class="text-muted">
+                                Booking #{{ booking.id }}
+                            </small>
+
+                            <h5 class="fw-bold mb-0">
+                                {{ booking.truck.truck_name }}
+                            </h5>
+
+                        </div>
+
+
+                        {% if booking.status == "Pending" %}
+
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
+
+                        {% elif booking.status == "Accepted" %}
+
+                            <span class="badge bg-success">
+                                Accepted
+                            </span>
+
+                        {% elif booking.status == "Rejected" %}
+
+                            <span class="badge bg-danger">
+                                Rejected
+                            </span>
+
+                        {% elif booking.status == "Cancelled" %}
+
+                            <span class="badge bg-secondary">
+                                Cancelled
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-primary">
+                                {{ booking.status }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="booking-route mb-4">
+
+                        <div>
+                            <small class="text-muted">
+                                Pickup
+                            </small>
+
+                            <strong>
+                                <i class="bi bi-geo-alt text-danger me-1"></i>
+                                {{ booking.transport_request.pickup_location }}
+                            </strong>
+                        </div>
+
+
+                        <div class="text-center my-2">
+                            <i class="bi bi-arrow-down text-muted"></i>
+                        </div>
+
+
+                        <div>
+                            <small class="text-muted">
+                                Destination
+                            </small>
+
+                            <strong>
+                                <i class="bi bi-geo-alt-fill text-success me-1"></i>
+                                {{ booking.transport_request.destination }}
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row g-3 mb-4">
+
+                        <div class="col-6">
+
+                            <small class="text-muted d-block">
+                                Goods
+                            </small>
+
+                            <strong>
+                                {{ booking.transport_request.goods_type }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="col-6">
+
+                            <small class="text-muted d-block">
+                                Quantity
+                            </small>
+
+                            <strong>
+                                {{ booking.transport_request.quantity }}
+                                {{ booking.transport_request.quantity_unit }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="col-6">
+
+                            <small class="text-muted d-block">
+                                Truck Type
+                            </small>
+
+                            <strong>
+                                {{ booking.truck.truck_type }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="col-6">
+
+                            <small class="text-muted d-block">
+                                Capacity
+                            </small>
+
+                            <strong>
+                                {{ booking.truck.capacity }}
+                                {{ booking.truck.capacity_unit }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    {% if booking.status in ["Pending", "Accepted"] %}
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'bookings.cancel_booking',
+                            booking_id=booking.id
+                        ) }}"
+                        onsubmit="return confirm('Cancel this booking?');"
+                    >
+
+                        <button
+                            type="submit"
+                            class="btn btn-outline-danger w-100"
+                        >
+                            <i class="bi bi-x-circle me-2"></i>
+                            Cancel Booking
+                        </button>
+
+                    </form>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body text-center py-5">
+
+            <i class="bi bi-calendar-x display-3 text-muted"></i>
+
+            <h4 class="fw-bold mt-3">
+                No Bookings Yet
+            </h4>
+
+            <p class="text-muted">
+                Find a suitable truck and send your first booking request.
+            </p>
+
+            <a
+                href="{{ url_for('requests.my_requests') }}"
+                class="btn btn-warning"
+            >
+                View My Requests
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

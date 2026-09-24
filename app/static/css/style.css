@@ -1,0 +1,1363 @@
+:root {
+    --primary: #0b3d2e;
+    --primary-dark: #06281e;
+    --accent: #f4b400;
+    --light: #f5f7f6;
+    --dark: #14231e;
+    --muted: #6c757d;
+    --white: #ffffff;
+    --border: #e4e9e6;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--dark);
+    background: #ffffff;
+    line-height: 1.6;
+}
+
+
+/* NAVBAR */
+
+.translink-navbar {
+    background: var(--primary-dark);
+    padding: 14px 0;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+}
+
+.brand-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--accent);
+    color: var(--primary-dark);
+    border-radius: 10px;
+}
+
+.brand-highlight {
+    color: var(--accent);
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+    margin: 0 8px;
+}
+
+.nav-link:hover {
+    color: var(--accent) !important;
+}
+
+
+/* BUTTONS */
+
+.btn-translink {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #14231e;
+    font-weight: 700;
+}
+
+.btn-translink:hover {
+    background: #d99e00;
+    border-color: #d99e00;
+    color: #14231e;
+}
+
+
+/* HERO */
+
+.hero-section {
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary-dark),
+            var(--primary)
+        );
+    color: white;
+    overflow: hidden;
+}
+
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: 8px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    color: #f7f7f7;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.hero-title {
+    font-size: clamp(2.7rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+}
+
+.hero-title span {
+    display: block;
+    color: var(--accent);
+}
+
+.hero-description {
+    max-width: 650px;
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.hero-statistics {
+    display: flex;
+    gap: 45px;
+}
+
+.hero-statistics div {
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-statistics strong {
+    font-size: 1.5rem;
+    color: var(--accent);
+}
+
+.hero-statistics span {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+
+/* HERO CARD */
+
+.hero-card {
+    background: white;
+    color: var(--dark);
+    border-radius: 22px;
+    padding: 25px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+}
+
+.hero-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+.online-dot {
+    width: 10px;
+    height: 10px;
+    background: #20c997;
+    border-radius: 50%;
+}
+
+.route-box {
+    background: var(--light);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.route-point {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.route-point small {
+    display: block;
+    color: var(--muted);
+}
+
+.route-point strong {
+    display: block;
+}
+
+.route-icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pickup {
+    color: var(--primary);
+}
+
+.destination {
+    color: #d63939;
+}
+
+.route-line {
+    height: 30px;
+    border-left: 2px dashed #c4cbc7;
+    margin-left: 17px;
+}
+
+.match-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 0;
+}
+
+.match-result small {
+    color: var(--muted);
+}
+
+.match-result h5 {
+    margin: 3px 0;
+}
+
+.match-result p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.match-score {
+    width: 65px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--accent);
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.match-features {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.match-features span {
+    font-size: 0.8rem;
+    background: #eef5f1;
+    padding: 6px 9px;
+    border-radius: 6px;
+}
+
+.match-features i {
+    color: #198754;
+}
+
+
+/* SECTIONS */
+
+.section-padding {
+    padding: 90px 0;
+}
+
+.section-heading {
+    max-width: 750px;
+    margin: auto;
+}
+
+.section-label {
+    color: var(--primary);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.section-heading h2 {
+    margin-top: 10px;
+    font-weight: 800;
+    font-size: 2.5rem;
+}
+
+.section-heading h2 span {
+    color: var(--primary);
+}
+
+.section-heading p {
+    color: var(--muted);
+    margin-top: 15px;
+}
+
+
+/* FEATURE CARDS */
+
+.feature-card {
+    height: 100%;
+    padding: 30px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    transition: 0.25s ease;
+    background: white;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+.feature-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #edf5f1;
+    color: var(--primary);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.feature-card h4 {
+    font-weight: 700;
+}
+
+.feature-card p {
+    color: var(--muted);
+}
+
+
+/* HOW IT WORKS */
+
+.how-section {
+    background: var(--light);
+}
+
+.step-card {
+    text-align: center;
+    background: white;
+    border-radius: 16px;
+    padding: 30px 20px;
+    height: 100%;
+    border: 1px solid var(--border);
+    position: relative;
+}
+
+.step-number {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 0.75rem;
+    color: #adb5bd;
+    font-weight: 800;
+}
+
+.step-icon {
+    display: block;
+    color: var(--primary);
+    font-size: 2rem;
+    margin: 15px 0;
+}
+
+.step-card h5 {
+    font-weight: 700;
+}
+
+.step-card p {
+    color: var(--muted);
+}
+
+
+/* CTA */
+
+.cta-section {
+    background: var(--primary);
+    color: white;
+    padding: 80px 20px;
+}
+
+.cta-section h2 {
+    font-weight: 800;
+    font-size: 2.5rem;
+}
+
+.cta-section p {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+
+/* FOOTER */
+
+.translink-footer {
+    background: #061d16;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.translink-footer h4,
+.translink-footer h6 {
+    color: white;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 8px;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.footer-links a:hover {
+    color: var(--accent);
+}
+
+.footer-divider {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .hero-section {
+        text-align: center;
+    }
+
+    .hero-title {
+        letter-spacing: -1px;
+    }
+
+    .hero-description {
+        margin: auto;
+    }
+
+    .hero-statistics {
+        justify-content: center;
+        gap: 25px;
+    }
+
+    .section-padding {
+        padding: 60px 0;
+    }
+
+    .section-heading h2 {
+        font-size: 2rem;
+    }
+
+}
+/* ================================
+   AUTHENTICATION
+================================ */
+
+.auth-section {
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    background: #f5f7fa;
+}
+
+.auth-card {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.auth-icon {
+    width: 70px;
+    height: 70px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #fff3cd;
+    color: #856404;
+    font-size: 30px;
+}
+
+.auth-card .form-control,
+.auth-card .form-select,
+.auth-card .input-group-text {
+    min-height: 50px;
+}
+
+.auth-card .form-control:focus,
+.auth-card .form-select:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.15);
+}
+
+.auth-card .input-group-text {
+    background: #f8f9fa;
+    border-right: 0;
+}
+
+.auth-card .input-group .form-control {
+    border-left: 0;
+}
+/* ================================
+   DASHBOARD
+================================ */
+
+.dashboard-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: #fff3cd;
+    color: #856404;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.quick-action {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #212529;
+    background: #f8f9fa;
+    transition: all 0.2s ease;
+}
+
+.quick-action:hover {
+    background: #fff3cd;
+    color: #212529;
+    transform: translateX(4px);
+}
+
+.quick-action > i {
+    font-size: 22px;
+}
+
+.quick-action strong {
+    display: block;
+}
+
+.quick-action small {
+    display: block;
+    color: #6c757d;
+    margin-top: 2px;
+}
+/* ================================
+   TRANSPORT REQUESTS
+================================ */
+
+.route-box {
+    padding: 10px 0;
+}
+
+.route-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.route-dot {
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    margin-top: 5px;
+    border-radius: 50%;
+    background: #ffc107;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px #ffc107;
+}
+
+.route-dot.destination {
+    background: #212529;
+    box-shadow: 0 0 0 2px #212529;
+}
+
+.route-line {
+    height: 35px;
+    border-left: 2px dashed #adb5bd;
+    margin-left: 6px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.summary-item:last-child {
+    border-bottom: 0;
+}
+/* ================================
+   SMART TRUCK MATCHING
+================================ */
+
+.truck-match-card {
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 20px;
+    background: #fff;
+    transition: all 0.2s ease;
+}
+
+.truck-match-card:hover {
+    border-color: #ffc107;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+}
+
+.truck-match-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #fff3cd;
+    color: #856404;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+.match-score {
+    font-size: 24px;
+    font-weight: 800;
+    color: #198754;
+}
+
+.match-detail {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.match-detail > i {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: #f8f9fa;
+    color: #495057;
+}
+
+.match-detail small,
+.match-detail strong {
+    display: block;
+}
+
+.match-detail small {
+    color: #6c757d;
+    margin-bottom: 2px;
+}
+
+.match-reasons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.match-reasons span {
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #e8f5e9;
+    color: #198754;
+    font-size: 13px;
+    font-weight: 500;
+}
+/* ==========================================
+   TRUCK OWNER MODULE
+========================================== */
+
+.truck-owner-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: #fff3cd;
+    color: #856404;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.truck-info-box {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 12px 14px;
+    min-height: 68px;
+}
+
+.truck-info-box small {
+    margin-bottom: 4px;
+}
+
+.truck-info-box strong {
+    color: #212529;
+}
+
+.form-control,
+.form-select {
+    border-radius: 10px;
+    padding: 11px 13px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.15);
+}
+
+textarea.form-control {
+    resize: vertical;
+}
+/* ==========================================
+   BOOKING SYSTEM
+========================================== */
+
+.booking-route {
+    background: #f8f9fa;
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.booking-route small {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.booking-route strong {
+    display: block;
+    color: #212529;
+}
+
+.booking-route .bi-arrow-down {
+    font-size: 18px;
+}
+/* =========================================
+OWNER BOOKING REQUESTS
+========================================= */
+
+.booking-stat-icon {
+width: 48px;
+height: 48px;
+border-radius: 12px;
+background: #fff3cd;
+color: #856404;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 20px;
+}
+
+.booking-request-card {
+transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.booking-request-card:hover {
+transform: translateY(-2px);
+}
+
+.booking-id {
+font-weight: 700;
+color: #212529;
+}
+
+.request-section {
+background: #f8f9fa;
+border-radius: 14px;
+padding: 18px;
+}
+
+.info-row {
+padding: 9px 0;
+border-bottom: 1px solid #e9ecef;
+}
+
+.info-row:last-child {
+border-bottom: none;
+}
+
+.info-row small {
+display: block;
+margin-bottom: 3px;
+}
+
+.info-row strong {
+color: #212529;
+}
+
+.route-card {
+background: #f8f9fa;
+border: 1px solid #e9ecef;
+border-radius: 14px;
+padding: 20px;
+}
+
+.route-arrow {
+font-size: 30px;
+color: #ffc107;
+}
+
+.description-box {
+background: #f8f9fa;
+border-radius: 12px;
+padding: 15px;
+color: #495057;
+line-height: 1.6;
+}
+
+.request-actions .btn {
+min-height: 48px;
+}
+
+.empty-booking-icon {
+width: 75px;
+height: 75px;
+border-radius: 20px;
+background: #f8f9fa;
+color: #6c757d;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 32px;
+}
+
+@media (max-width: 767px) {
+
+```
+.route-arrow {
+    transform: rotate(90deg);
+}
+
+.booking-request-card .card-body {
+    padding: 20px !important;
+}
+```
+
+}
+/* =========================================
+   NOTIFICATIONS
+========================================= */
+
+.notification-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.notification-card:hover {
+    transform: translateY(-2px);
+}
+
+.notification-unread {
+    border-left: 4px solid #ffc107 !important;
+}
+
+.notification-icon {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 21px;
+}
+
+.booking-icon {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.general-icon {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.empty-notification-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 22px;
+
+    background: #f8f9fa;
+    color: #6c757d;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 34px;
+}
+/* =========================================
+   NAVBAR VISIBILITY
+========================================= */
+
+.navbar {
+    background: #111827 !important;
+    min-height: 72px;
+    z-index: 1030;
+}
+
+.navbar .navbar-brand {
+    color: #ffffff !important;
+    font-size: 1.35rem;
+}
+
+.navbar .navbar-brand:hover {
+    color: #ffc107 !important;
+}
+
+.navbar .nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    padding: 10px 12px !important;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+    color: #ffc107 !important;
+}
+
+.navbar .nav-link i {
+    color: #ffc107 !important;
+}
+
+.navbar .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.navbar .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+.navbar .dropdown-menu {
+    z-index: 1050;
+}
+
+.navbar .dropdown-item i {
+    color: #ffc107;
+}
+
+/* Notification link */
+.navbar .notification-link {
+    position: relative;
+}
+
+.navbar .notification-link i {
+    font-size: 18px;
+}
+
+
+/* =========================================
+   HERO SECTION
+========================================= */
+
+.hero-section {
+    background:
+        linear-gradient(
+            rgba(17, 24, 39, 0.82),
+            rgba(17, 24, 39, 0.82)
+        ),
+        linear-gradient(135deg, #111827, #1f2937);
+
+    color: #ffffff;
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+}
+
+.hero-section h1,
+.hero-section h2,
+.hero-section h3,
+.hero-section h4,
+.hero-section h5 {
+    color: #ffffff;
+}
+
+.hero-section p {
+    color: rgba(255, 255, 255, 0.85);
+}
+/* =========================================
+   ADMIN DASHBOARD
+========================================= */
+
+.admin-mini-stat {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #e9ecef;
+}
+
+.admin-mini-stat small {
+    display: block;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+.admin-mini-stat strong {
+    display: block;
+    font-size: 1.5rem;
+    color: #212529;
+}
+
+.table th {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    color: #6c757d;
+    text-transform: uppercase;
+}
+
+.table td {
+    vertical-align: middle;
+}
+/* =========================================
+   ADMIN USER MANAGEMENT
+========================================= */
+
+.admin-user-avatar {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 12px;
+    background: #f8f9fa;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.admin-user-avatar i {
+    color: #ffc107;
+}
+
+.table-hover tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #fafafa;
+}
+/* =========================================================
+   ADMIN TRUCK MANAGEMENT
+   ========================================================= */
+
+.admin-truck-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 12px;
+    background: #fff3cd;
+    color: #856404;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+}
+
+.admin-truck-icon i {
+    color: #856404;
+}
+
+.admin-truck-icon + div strong {
+    color: #212529;
+}
+
+.admin-truck-icon + div small {
+    font-size: 0.78rem;
+}
+
+.admin-truck-management .table td {
+    vertical-align: middle;
+}
+
+.admin-truck-management .table th {
+    white-space: nowrap;
+}
+/* =========================================================
+   ADMIN TRANSPORT REQUESTS
+   ========================================================= */
+
+.admin-request-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background: #fff3cd;
+    color: #856404;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+.admin-request-number {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 12px;
+    background: #f8f9fa;
+    color: #212529;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-route {
+    min-width: 190px;
+    font-size: 0.85rem;
+}
+
+.admin-route-line {
+    width: 1px;
+    height: 12px;
+    background: #ced4da;
+    margin: 2px 0 2px 7px;
+}
+
+.admin-route div {
+    white-space: nowrap;
+}
+
+.admin-route i {
+    font-size: 10px;
+}
+
+@media (max-width: 767px) {
+
+    .admin-route {
+        min-width: 160px;
+    }
+
+    .admin-request-number {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+    }
+
+}
+/* =========================================================
+   ADMIN BOOKING MANAGEMENT
+   ========================================================= */
+
+.admin-booking-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background: #fff3cd;
+    color: #856404;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+.admin-booking-number {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 12px;
+    background: #f8f9fa;
+    color: #212529;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-booking-route {
+    min-width: 190px;
+    font-size: 0.84rem;
+}
+
+.admin-booking-route div {
+    white-space: nowrap;
+}
+
+.admin-booking-route i {
+    font-size: 10px;
+}
+
+.admin-booking-route .admin-route-line {
+    width: 1px;
+    height: 12px;
+    background: #ced4da;
+    margin: 2px 0 2px 7px;
+}
+
+@media (max-width: 767px) {
+
+    .admin-booking-route {
+        min-width: 160px;
+    }
+
+    .admin-booking-number {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+    }
+
+}
+/* =========================================================
+   ADMIN ACTIVITY LOG
+   ========================================================= */
+
+.activity-summary-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    background: #fff3cd;
+    color: #856404;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.activity-header-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background: #fff3cd;
+    color: #856404;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+.activity-list {
+    padding: 10px 24px 24px;
+}
+
+.activity-item {
+    display: flex;
+    gap: 18px;
+    padding: 22px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 13px;
+    background: #f8f9fa;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-content h6 {
+    color: #212529;
+}
+
+.activity-content p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.activity-time {
+    color: #6c757d;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+
+    .activity-list {
+        padding: 10px 18px;
+    }
+
+    .activity-item {
+        gap: 12px;
+    }
+
+    .activity-time {
+        white-space: normal;
+    }
+
+}
+/* =========================================================
+   ADMIN REPORTS & ANALYTICS
+   ========================================================= */
+
+.report-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+.users-icon {
+    background: #e8f0fe;
+    color: #1a56db;
+}
+
+.trucks-icon {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.requests-icon {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.bookings-icon {
+    background: #f3e8ff;
+    color: #7b1fa2;
+}
+
+.report-chart-container {
+    position: relative;
+    height: 300px;
+}
+
+.report-large-chart {
+    position: relative;
+    height: 350px;
+}
+
+@media (max-width: 767px) {
+
+    .report-chart-container {
+        height: 260px;
+    }
+
+    .report-large-chart {
+        height: 280px;
+    }
+
+}

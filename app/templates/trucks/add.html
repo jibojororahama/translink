@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block title %}Add Truck - TransLink{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="mb-4">
+                <h2 class="fw-bold">
+                    <i class="bi bi-truck me-2"></i>
+                    Add New Truck
+                </h2>
+
+                <p class="text-muted">
+                    Register your truck on TransLink so traders can find and request it.
+                </p>
+            </div>
+
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4 p-md-5">
+
+                    <form method="POST">
+
+                        <!-- TRUCK NAME -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Truck Name
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                name="truck_name"
+                                class="form-control"
+                                placeholder="e.g. TransLink Truck 01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- TRUCK TYPE -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Truck Type
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <select
+                                name="truck_type"
+                                class="form-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select truck type
+                                </option>
+
+                                <option value="Cargo Truck">
+                                    Cargo Truck
+                                </option>
+
+                                <option value="Flatbed Truck">
+                                    Flatbed Truck
+                                </option>
+
+                                <option value="Tipper Truck">
+                                    Tipper Truck
+                                </option>
+
+                                <option value="Box Truck">
+                                    Box Truck
+                                </option>
+
+                                <option value="Tanker Truck">
+                                    Tanker Truck
+                                </option>
+
+                                <option value="Refrigerated Truck">
+                                    Refrigerated Truck
+                                </option>
+
+                                <option value="Trailer">
+                                    Trailer
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="row">
+
+                            <!-- CAPACITY -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Capacity (tons)
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <input
+                                    type="number"
+                                    name="capacity"
+                                    class="form-control"
+                                    min="0.1"
+                                    step="0.1"
+                                    placeholder="e.g. 10"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- REGISTRATION -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Registration Number
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="registration_number"
+                                    class="form-control"
+                                    placeholder="e.g. ABC-123-XY"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CURRENT LOCATION -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Current Location
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-geo-alt"></i>
+                                </span>
+
+                                <input
+                                    type="text"
+                                    name="current_location"
+                                    class="form-control"
+                                    placeholder="e.g. Jos, Plateau State"
+                                    required
+                                >
+
+                            </div>
+
+                            <small class="text-muted">
+                                Enter the Nigerian city or state where the truck is currently located.
+                            </small>
+
+                        </div>
+
+
+                        <!-- DESTINATION -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Preferred Destination
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-signpost-2"></i>
+                                </span>
+
+                                <input
+                                    type="text"
+                                    name="destination_area"
+                                    class="form-control"
+                                    placeholder="e.g. Abuja, FCT"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- AVAILABILITY -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Availability
+                            </label>
+
+                            <select
+                                name="availability"
+                                class="form-select"
+                            >
+
+                                <option value="Available">
+                                    Available
+                                </option>
+
+                                <option value="Unavailable">
+                                    Unavailable
+                                </option>
+
+                                <option value="Maintenance">
+                                    Maintenance
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Description
+                            </label>
+
+                            <textarea
+                                name="description"
+                                class="form-control"
+                                rows="4"
+                                placeholder="Describe your truck, services, or any additional information..."
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- BUTTONS -->
+
+                        <div class="d-flex gap-2">
+
+                            <a
+                                href="{{ url_for('trucks.my_trucks') }}"
+                                class="btn btn-outline-secondary flex-fill"
+                            >
+
+                                <i class="bi bi-arrow-left me-1"></i>
+                                Cancel
+
+                            </a>
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-warning flex-fill fw-semibold"
+                            >
+
+                                <i class="bi bi-plus-circle me-1"></i>
+                                Add Truck
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

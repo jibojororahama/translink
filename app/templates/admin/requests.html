@@ -1,0 +1,425 @@
+{% extends "base.html" %}
+
+{% block title %}Transport Requests - TransLink{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- HEADER -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+        <div>
+            <span class="badge bg-warning text-dark mb-2">
+                <i class="bi bi-shield-check me-1"></i>
+                Administrator
+            </span>
+
+            <h2 class="fw-bold mb-1">
+                Transport Requests
+            </h2>
+
+            <p class="text-muted mb-0">
+                Monitor transportation requests submitted by traders.
+            </p>
+        </div>
+
+        <a href="{{ url_for('admin.dashboard') }}"
+           class="btn btn-outline-dark">
+            <i class="bi bi-arrow-left me-1"></i>
+            Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- FILTER -->
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <form method="GET"
+                  action="{{ url_for('admin.transport_requests') }}">
+
+                <div class="row g-3 align-items-end">
+
+                    <div class="col-md-8">
+
+                        <label class="form-label fw-semibold">
+                            Request Status
+                        </label>
+
+                        <select name="status"
+                                class="form-select">
+
+                            <option value="">
+                                All request statuses
+                            </option>
+
+                            <option value="Pending"
+                                {% if status == "Pending" %}selected{% endif %}>
+                                Pending
+                            </option>
+
+                            <option value="Matched"
+                                {% if status == "Matched" %}selected{% endif %}>
+                                Matched
+                            </option>
+
+                            <option value="Sent"
+                                {% if status == "Sent" %}selected{% endif %}>
+                                Sent
+                            </option>
+
+                            <option value="Accepted"
+                                {% if status == "Accepted" %}selected{% endif %}>
+                                Accepted
+                            </option>
+
+                            <option value="Rejected"
+                                {% if status == "Rejected" %}selected{% endif %}>
+                                Rejected
+                            </option>
+
+                            <option value="Cancelled"
+                                {% if status == "Cancelled" %}selected{% endif %}>
+                                Cancelled
+                            </option>
+
+                            <option value="In Transit"
+                                {% if status == "In Transit" %}selected{% endif %}>
+                                In Transit
+                            </option>
+
+                            <option value="Completed"
+                                {% if status == "Completed" %}selected{% endif %}>
+                                Completed
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <button type="submit"
+                                class="btn btn-dark w-100">
+
+                            <i class="bi bi-funnel me-1"></i>
+                            Filter
+
+                        </button>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <a href="{{ url_for('admin.transport_requests') }}"
+                           class="btn btn-outline-secondary w-100">
+
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>
+                            Reset
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- REQUEST LIST -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white border-0 p-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5 class="fw-bold mb-1">
+                        Registered Transport Requests
+                    </h5>
+
+                    <p class="text-muted small mb-0">
+                        {{ requests|length }} request(s) found
+                    </p>
+
+                </div>
+
+                <div class="admin-request-icon">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+
+                    <tr>
+                        <th>Request</th>
+                        <th>Trader</th>
+                        <th>Goods</th>
+                        <th>Quantity</th>
+                        <th>Route</th>
+                        <th>Required Date</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in requests %}
+
+                    <tr>
+
+                        <!-- REQUEST -->
+
+                        <td>
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <div class="admin-request-number">
+                                    #{{ item.id }}
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Transport Request
+                                    </strong>
+
+                                    <small class="d-block text-muted">
+                                        ID: TL-REQ-{{ "%05d"|format(item.id) }}
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- TRADER -->
+
+                        <td>
+
+                            {% if item.trader %}
+
+                                <strong>
+                                    {{ item.trader.full_name }}
+                                </strong>
+
+                                <small class="d-block text-muted">
+                                    {{ item.trader.phone }}
+                                </small>
+
+                            {% else %}
+
+                                <span class="text-muted">
+                                    Unknown trader
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- GOODS -->
+
+                        <td>
+
+                            <strong>
+                                {{ item.goods_type }}
+                            </strong>
+
+                            {% if item.truck_type_required %}
+
+                                <small class="d-block text-muted">
+                                    {{ item.truck_type_required }}
+                                </small>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- QUANTITY -->
+
+                        <td>
+
+                            <strong>
+                                {{ item.quantity }}
+                            </strong>
+
+                            <small class="text-muted">
+                                {{ item.quantity_unit }}
+                            </small>
+
+                        </td>
+
+
+                        <!-- ROUTE -->
+
+                        <td>
+
+                            <div class="admin-route">
+
+                                <div>
+                                    <i class="bi bi-geo-alt-fill text-success me-1"></i>
+                                    {{ item.pickup_location }}
+                                </div>
+
+                                <div class="admin-route-line"></div>
+
+                                <div>
+                                    <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                                    {{ item.destination }}
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- DATE -->
+
+                        <td>
+
+                            <span class="text-nowrap">
+                                <i class="bi bi-calendar3 me-1 text-warning"></i>
+                                {{ item.required_date.strftime("%d %b %Y") }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if item.status == "Pending" %}
+
+                                <span class="badge bg-warning text-dark">
+                                    Pending
+                                </span>
+
+                            {% elif item.status == "Matched" %}
+
+                                <span class="badge bg-info text-dark">
+                                    Matched
+                                </span>
+
+                            {% elif item.status == "Sent" %}
+
+                                <span class="badge bg-primary">
+                                    Sent
+                                </span>
+
+                            {% elif item.status == "Accepted" %}
+
+                                <span class="badge bg-success">
+                                    Accepted
+                                </span>
+
+                            {% elif item.status == "Rejected" %}
+
+                                <span class="badge bg-danger">
+                                    Rejected
+                                </span>
+
+                            {% elif item.status == "Cancelled" %}
+
+                                <span class="badge bg-secondary">
+                                    Cancelled
+                                </span>
+
+                            {% elif item.status == "In Transit" %}
+
+                                <span class="badge bg-dark">
+                                    In Transit
+                                </span>
+
+                            {% elif item.status == "Completed" %}
+
+                                <span class="badge bg-success">
+                                    Completed
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    {{ item.status }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- CREATED -->
+
+                        <td>
+
+                            <small class="text-muted text-nowrap">
+                                {{ item.created_at.strftime("%d %b %Y") }}
+                            </small>
+
+                        </td>
+
+                    </tr>
+
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="8"
+                            class="text-center py-5">
+
+                            <div class="empty-notification-icon mx-auto mb-3">
+
+                                <i class="bi bi-box-seam"></i>
+
+                            </div>
+
+                            <h5 class="fw-bold">
+                                No transport requests found
+                            </h5>
+
+                            <p class="text-muted mb-0">
+                                There are no requests matching the selected filter.
+                            </p>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

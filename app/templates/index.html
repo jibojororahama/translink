@@ -1,0 +1,488 @@
+{% extends "base.html" %}
+
+{% block title %}
+TransLink | Connecting Trucks With Traders
+{% endblock %}
+
+
+{% block content %}
+
+<!-- HERO SECTION -->
+
+<section class="hero-section">
+
+    <div class="container">
+
+        <div class="row align-items-center min-vh-75">
+
+            <div class="col-lg-7">
+
+                <div class="hero-badge mb-4">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    Connecting businesses across Nigeria
+                </div>
+
+                <h1 class="hero-title">
+
+                    Move Your Goods.
+                    <span>Find the Right Truck.</span>
+
+                </h1>
+
+                <p class="hero-description">
+
+                    TransLink connects traders and businesses with
+                    reliable truck owners, making goods transportation
+                    easier, faster and more organized.
+
+                </p>
+
+
+                <div class="hero-buttons mt-4">
+
+                    <a href="{{ url_for('auth.register') }}"
+                       class="btn btn-translink btn-lg me-2">
+
+                        <i class="bi bi-search"></i>
+                        Find a Truck
+
+                    </a>
+
+
+                    <a href="{{ url_for('auth.register') }}"
+                       class="btn btn-outline-light btn-lg">
+
+                        <i class="bi bi-truck"></i>
+                        Register Your Truck
+
+                    </a>
+
+                </div>
+
+
+                <div class="hero-statistics mt-5">
+
+                    <div>
+                        <strong>3</strong>
+                        <span>User Roles</span>
+                    </div>
+
+                    <div>
+                        <strong>24/7</strong>
+                        <span>Platform Access</span>
+                    </div>
+
+                    <div>
+                        <strong>NG</strong>
+                        <span>Nigeria Focused</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-5 mt-5 mt-lg-0">
+
+                <div class="hero-card">
+
+                    <div class="hero-card-header">
+
+                        <span>
+                            <i class="bi bi-activity"></i>
+                            Smart Truck Matching
+                        </span>
+
+                        <span class="online-dot"></span>
+
+                    </div>
+
+
+                    <div class="route-box">
+
+                        <div class="route-point">
+
+                            <span class="route-icon pickup">
+                                <i class="bi bi-circle-fill"></i>
+                            </span>
+
+                            <div>
+                                <small>Pickup</small>
+                                <strong>Jos, Plateau State</strong>
+                            </div>
+
+                        </div>
+
+
+                        <div class="route-line"></div>
+
+
+                        <div class="route-point">
+
+                            <span class="route-icon destination">
+                                <i class="bi bi-geo-alt-fill"></i>
+                            </span>
+
+                            <div>
+                                <small>Destination</small>
+                                <strong>Abuja, FCT</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="match-result">
+
+                        <div>
+
+                            <small>
+                                Best Available Match
+                            </small>
+
+                            <h5>
+                                Cargo Truck
+                            </h5>
+
+                            <p>
+                                10 Ton Capacity
+                            </p>
+
+                        </div>
+
+
+                        <div class="match-score">
+                            92%
+                        </div>
+
+                    </div>
+
+
+                    <div class="match-features">
+
+                        <span>
+                            <i class="bi bi-check-circle-fill"></i>
+                            Capacity
+                        </span>
+
+                        <span>
+                            <i class="bi bi-check-circle-fill"></i>
+                            Location
+                        </span>
+
+                        <span>
+                            <i class="bi bi-check-circle-fill"></i>
+                            Availability
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES -->
+
+<section id="features" class="section-padding">
+
+    <div class="container">
+
+        <div class="section-heading text-center">
+
+            <span class="section-label">
+                PLATFORM FEATURES
+            </span>
+
+            <h2>
+                Everything You Need for
+                <span>Smarter Transportation</span>
+            </h2>
+
+            <p>
+                TransLink simplifies the process of finding trucks,
+                requesting transportation and managing bookings.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4 mt-4">
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-search"></i>
+                    </div>
+
+                    <h4>Smart Truck Matching</h4>
+
+                    <p>
+                        Find suitable trucks based on capacity,
+                        location, availability, truck type and
+                        transportation requirements.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-map"></i>
+                    </div>
+
+                    <h4>Location-Based Logistics</h4>
+
+                    <p>
+                        Organize pickup locations, destinations
+                        and truck locations across Nigeria.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+
+                    <h4>Easy Booking</h4>
+
+                    <p>
+                        Traders can submit transportation requests
+                        and truck owners can accept or reject them.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-bell"></i>
+                    </div>
+
+                    <h4>Real-Time Notifications</h4>
+
+                    <p>
+                        Stay informed about requests, bookings
+                        and transportation status changes.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+
+                    <h4>Secure Accounts</h4>
+
+                    <p>
+                        Role-based access and secure authentication
+                        help protect platform accounts and information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-bar-chart"></i>
+                    </div>
+
+                    <h4>Management Dashboard</h4>
+
+                    <p>
+                        Monitor transportation requests, trucks,
+                        bookings and platform activities.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- HOW IT WORKS -->
+
+<section id="how-it-works"
+         class="section-padding how-section">
+
+    <div class="container">
+
+        <div class="section-heading text-center">
+
+            <span class="section-label">
+                HOW TRANSLINK WORKS
+            </span>
+
+            <h2>
+                Transportation Made
+                <span>Simple</span>
+            </h2>
+
+        </div>
+
+
+        <div class="row g-4 mt-5">
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+                    <i class="bi bi-person-plus step-icon"></i>
+
+                    <h5>Create an Account</h5>
+
+                    <p>
+                        Register as a trader or truck owner.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        02
+                    </div>
+
+                    <i class="bi bi-file-earmark-text step-icon"></i>
+
+                    <h5>Create a Request</h5>
+
+                    <p>
+                        Enter your goods, pickup location,
+                        destination and requirements.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+                    <i class="bi bi-search step-icon"></i>
+
+                    <h5>Find a Match</h5>
+
+                    <p>
+                        TransLink identifies suitable available trucks.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        04
+                    </div>
+
+                    <i class="bi bi-check-circle step-icon"></i>
+
+                    <h5>Book & Transport</h5>
+
+                    <p>
+                        Send a request, confirm the booking
+                        and manage the transportation.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CTA -->
+
+<section class="cta-section">
+
+    <div class="container text-center">
+
+        <h2>
+            Ready to Simplify Your Logistics?
+        </h2>
+
+        <p>
+            Join TransLink and connect with the transportation
+            network you need.
+        </p>
+
+        <a href="{{ url_for('auth.register') }}"
+           class="btn btn-translink btn-lg px-5">
+
+            Get Started
+            <i class="bi bi-arrow-right"></i>
+
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}
