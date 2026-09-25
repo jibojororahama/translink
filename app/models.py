@@ -3,18 +3,10 @@ from datetime import datetime
 from app import db
 
 
-# ============================================================
-# USER
-# ============================================================
-
 class User(db.Model):
-
     __tablename__ = "users"
 
-    id = db.Column(
-        db.Integer,
-        primary_key=True
-    )
+    id = db.Column(db.Integer, primary_key=True)
 
     full_name = db.Column(
         db.String(120),
@@ -54,7 +46,6 @@ class User(db.Model):
         nullable=False
     )
 
-
     transport_requests = db.relationship(
         "TransportRequest",
         back_populates="trader",
@@ -88,12 +79,7 @@ class User(db.Model):
     )
 
 
-# ============================================================
-# TRUCK
-# ============================================================
-
 class Truck(db.Model):
-
     __tablename__ = "trucks"
 
     id = db.Column(
@@ -165,7 +151,6 @@ class Truck(db.Model):
         onupdate=datetime.utcnow
     )
 
-
     owner = db.relationship(
         "User",
         back_populates="trucks",
@@ -184,12 +169,7 @@ class Truck(db.Model):
     )
 
 
-# ============================================================
-# TRANSPORT REQUEST
-# ============================================================
-
 class TransportRequest(db.Model):
-
     __tablename__ = "transport_requests"
 
     id = db.Column(
@@ -262,7 +242,6 @@ class TransportRequest(db.Model):
         onupdate=datetime.utcnow
     )
 
-
     trader = db.relationship(
         "User",
         back_populates="transport_requests",
@@ -281,12 +260,7 @@ class TransportRequest(db.Model):
     )
 
 
-# ============================================================
-# TRUCK MATCH
-# ============================================================
-
 class TruckMatch(db.Model):
-
     __tablename__ = "truck_matches"
 
     id = db.Column(
@@ -348,7 +322,6 @@ class TruckMatch(db.Model):
         nullable=False
     )
 
-
     transport_request = db.relationship(
         "TransportRequest",
         back_populates="matches"
@@ -360,12 +333,7 @@ class TruckMatch(db.Model):
     )
 
 
-# ============================================================
-# BOOKING
-# ============================================================
-
 class Booking(db.Model):
-
     __tablename__ = "bookings"
 
     id = db.Column(
@@ -415,7 +383,6 @@ class Booking(db.Model):
         onupdate=datetime.utcnow
     )
 
-
     transport_request = db.relationship(
         "TransportRequest",
         back_populates="bookings"
@@ -446,12 +413,7 @@ class Booking(db.Model):
     )
 
 
-# ============================================================
-# PAYMENT
-# ============================================================
-
 class Payment(db.Model):
-
     __tablename__ = "payments"
 
     id = db.Column(
@@ -518,7 +480,6 @@ class Payment(db.Model):
         onupdate=datetime.utcnow
     )
 
-
     booking = db.relationship(
         "Booking",
         back_populates="payment"
@@ -530,12 +491,7 @@ class Payment(db.Model):
     )
 
 
-# ============================================================
-# NOTIFICATION
-# ============================================================
-
 class Notification(db.Model):
-
     __tablename__ = "notifications"
 
     id = db.Column(
@@ -576,19 +532,13 @@ class Notification(db.Model):
         nullable=False
     )
 
-
     user = db.relationship(
         "User",
         back_populates="notifications"
     )
 
 
-# ============================================================
-# ADMIN ACTIVITY
-# ============================================================
-
 class AdminActivity(db.Model):
-
     __tablename__ = "admin_activity"
 
     id = db.Column(
@@ -610,6 +560,62 @@ class AdminActivity(db.Model):
     description = db.Column(
         db.Text,
         nullable=True
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        nullable=False
+    )
+
+
+class RegistrationVerification(db.Model):
+    __tablename__ = "registration_verifications"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    full_name = db.Column(
+        db.String(120),
+        nullable=False
+    )
+
+    email = db.Column(
+        db.String(120),
+        nullable=False
+    )
+
+    phone = db.Column(
+        db.String(30),
+        nullable=False
+    )
+
+    role = db.Column(
+        db.String(20),
+        nullable=False
+    )
+
+    password_hash = db.Column(
+        db.String(255),
+        nullable=False
+    )
+
+    code_hash = db.Column(
+        db.String(255),
+        nullable=False
+    )
+
+    expires_at = db.Column(
+        db.DateTime,
+        nullable=False
+    )
+
+    attempts = db.Column(
+        db.Integer,
+        default=0,
+        nullable=False
     )
 
     created_at = db.Column(
