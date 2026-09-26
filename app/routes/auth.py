@@ -32,7 +32,7 @@ auth_bp = Blueprint(
 
 BREVO_API_URL = "https://api.brevo.com/v3/smtp/email"
 
-BREVO_SENDER_EMAIL = "jibojororahama@gmail.com"
+BREVO_SENDER_EMAIL = "jibojorahama@gmail.com"
 BREVO_SENDER_NAME = "TransLink"
 
 
@@ -789,10 +789,6 @@ def logout():
 # ============================================================
 # TEMPORARY ADMIN PASSWORD RESET
 # ============================================================
-# IMPORTANT:
-# This route is temporary.
-# Remove it after recovering the admin account.
-# ============================================================
 
 @auth_bp.route("/admin-reset", methods=["GET", "POST"])
 def admin_reset():
@@ -877,11 +873,10 @@ def admin_reset():
         "auth/admin_reset.html",
         admin_emails=admin_emails
     )
+
+
 # ============================================================
 # TEMPORARY FIRST ADMIN SETUP
-# ============================================================
-# Use this only to create the first admin on the live database.
-# Remove this route after creating the admin account.
 # ============================================================
 
 @auth_bp.route("/admin-setup", methods=["GET", "POST"])
@@ -891,13 +886,16 @@ def admin_setup():
         role="admin"
     ).first()
 
-    # Prevent creating another admin once one exists
     if existing_admin:
+
         flash(
             "An administrator account already exists.",
             "warning"
         )
-        return redirect(url_for("auth.login"))
+
+        return redirect(
+            url_for("auth.login")
+        )
 
     if request.method == "POST":
 
@@ -956,16 +954,19 @@ def admin_setup():
         admin = User(
             full_name=full_name,
             email=email,
+            phone="N/A",
             password_hash=generate_password_hash(password),
             role="admin",
             is_active=True
         )
 
         db.session.add(admin)
+
         db.session.commit()
 
         flash(
-            "Administrator account created successfully. You can now login.",
+            "Administrator account created successfully. "
+            "You can now login.",
             "success"
         )
 
