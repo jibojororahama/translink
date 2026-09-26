@@ -877,3 +877,102 @@ def admin_reset():
         "auth/admin_reset.html",
         admin_emails=admin_emails
     )
+# ============================================================
+# TEMPORARY FIRST ADMIN SETUP
+# ============================================================
+# Use this only to create the first admin on the live database.
+# Remove this route after creating the admin account.
+# ============================================================
+
+@auth_bp.route("/admin-setup", methods=["GET", "POST"])
+def admin_setup():
+
+    existing_admin = User.query.filter_by(
+        role="admin"
+    ).first()
+
+    # Prevent creating another admin once one exists
+    if existing_admin:
+        flash(
+            "An administrator account already exists.",
+            "warning"
+        )
+        return redirect(url_for("auth.login"))
+
+    if request.method == "POST":
+
+        full_name = request.form.get(
+            "full_name",
+            ""
+        ).strip()
+
+        email = request.form.get(
+            "email",
+            ""
+        ).strip().lower()
+
+        password = request.form.get(
+            "password",
+            ""
+        )
+
+        if not full_name or not email or not password:
+
+            flash(
+                "All fields are required.",
+                "danger"
+            )
+
+            return redirect(
+                url_for("auth.admin_setup")
+            )
+
+        if len(password) < 6:
+
+            flash(
+                "Password must contain at least 6 characters.",
+                "danger"
+            )
+
+            return redirect(
+                url_for("auth.admin_setup")
+            )
+
+        existing_user = User.query.filter_by(
+            email=email
+        ).first()
+
+        if existing_user:
+
+            flash(
+                "This email is already registered.",
+                "danger"
+            )
+
+            return redirect(
+                url_for("auth.admin_setup")
+            )
+
+        admin = User(
+            full_name=full_name,
+            email=email,
+            password_hash=generate_password_hash(password),
+            role="admin",
+            is_active=True
+        )
+
+        db.session.add(admin)
+        db.session.commit()
+
+        flash(
+            "Administrator account created successfully. You can now login.",
+            "success"
+        )
+
+        return redirect(
+            url_for("auth.login")
+        )
+
+    return render_template(
+        "auth/admin_setup.html"
+    )
