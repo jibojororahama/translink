@@ -61,7 +61,7 @@ def send_verification_email(email, full_name, code):
             }
         ],
 
-        "subject": "TransLink Email Verification Code",
+        "subject": "TransLink Email Verification",
 
         "htmlContent": f"""
         <!DOCTYPE html>
@@ -223,10 +223,6 @@ def register():
             ""
         )
 
-        # ----------------------------------------------------
-        # VALIDATION
-        # ----------------------------------------------------
-
         if not full_name or not email or not phone or not role:
 
             flash(
@@ -271,10 +267,6 @@ def register():
                 "auth/register.html"
             )
 
-        # ----------------------------------------------------
-        # CHECK EXISTING ACCOUNT
-        # ----------------------------------------------------
-
         existing_user = User.query.filter_by(
             email=email
         ).first()
@@ -291,10 +283,6 @@ def register():
                 url_for("auth.login")
             )
 
-        # ----------------------------------------------------
-        # REMOVE OLD VERIFICATION
-        # ----------------------------------------------------
-
         old_verification = (
             RegistrationVerification.query
             .filter_by(email=email)
@@ -306,17 +294,9 @@ def register():
             db.session.delete(old_verification)
             db.session.commit()
 
-        # ----------------------------------------------------
-        # GENERATE 6-DIGIT CODE
-        # ----------------------------------------------------
-
         verification_code = (
             f"{secrets.randbelow(1000000):06d}"
         )
-
-        # ----------------------------------------------------
-        # CREATE VERIFICATION RECORD
-        # ----------------------------------------------------
 
         verification = RegistrationVerification(
 
@@ -348,17 +328,9 @@ def register():
 
         db.session.commit()
 
-        # ----------------------------------------------------
-        # SAVE VERIFICATION ID
-        # ----------------------------------------------------
-
         session["pending_verification_id"] = (
             verification.id
         )
-
-        # ----------------------------------------------------
-        # SEND VERIFICATION EMAIL
-        # ----------------------------------------------------
 
         email_sent = send_verification_email(
             email,
@@ -445,10 +417,6 @@ def verify_email():
             url_for("auth.register")
         )
 
-    # --------------------------------------------------------
-    # CHECK EXPIRY
-    # --------------------------------------------------------
-
     if datetime.utcnow() > verification.expires_at:
 
         db.session.delete(verification)
@@ -469,10 +437,6 @@ def verify_email():
             url_for("auth.register")
         )
 
-    # --------------------------------------------------------
-    # VERIFY CODE
-    # --------------------------------------------------------
-
     if request.method == "POST":
 
         code = request.form.get(
@@ -491,10 +455,6 @@ def verify_email():
                 "auth/verify_email.html",
                 email=verification.email
             )
-
-        # ----------------------------------------------------
-        # MAXIMUM ATTEMPTS
-        # ----------------------------------------------------
 
         if verification.attempts >= 5:
 
@@ -518,10 +478,6 @@ def verify_email():
 
         verification.attempts += 1
 
-        # ----------------------------------------------------
-        # CHECK HASH
-        # ----------------------------------------------------
-
         if not check_password_hash(
             verification.code_hash,
             code
@@ -543,10 +499,6 @@ def verify_email():
                 "auth/verify_email.html",
                 email=verification.email
             )
-
-        # ----------------------------------------------------
-        # CHECK IF ACCOUNT ALREADY EXISTS
-        # ----------------------------------------------------
 
         existing_user = User.query.filter_by(
             email=verification.email
@@ -571,10 +523,6 @@ def verify_email():
                 url_for("auth.login")
             )
 
-        # ----------------------------------------------------
-        # CREATE ACCOUNT
-        # ----------------------------------------------------
-
         user = User(
 
             full_name=verification.full_name,
@@ -596,20 +544,12 @@ def verify_email():
 
         db.session.commit()
 
-        # ----------------------------------------------------
-        # LOGIN USER
-        # ----------------------------------------------------
-
         session.clear()
 
         session["logged_in"] = True
-
         session["user_id"] = user.id
-
         session["user_role"] = user.role
-
         session["user_name"] = user.full_name
-
         session["user_email"] = user.email
 
         flash(
@@ -617,10 +557,6 @@ def verify_email():
             "Your TransLink account has been created.",
             "success"
         )
-
-        # ----------------------------------------------------
-        # REDIRECT BY ROLE
-        # ----------------------------------------------------
 
         if user.role == "trader":
 
@@ -691,10 +627,6 @@ def resend_verification():
             url_for("auth.register")
         )
 
-    # --------------------------------------------------------
-    # GENERATE NEW CODE
-    # --------------------------------------------------------
-
     verification_code = (
         f"{secrets.randbelow(1000000):06d}"
     )
@@ -713,10 +645,6 @@ def resend_verification():
     verification.attempts = 0
 
     db.session.commit()
-
-    # --------------------------------------------------------
-    # SEND NEW EMAIL
-    # --------------------------------------------------------
 
     email_sent = send_verification_email(
         verification.email,
@@ -808,13 +736,9 @@ def login():
         session.clear()
 
         session["logged_in"] = True
-
         session["user_id"] = user.id
-
         session["user_role"] = user.role
-
         session["user_name"] = user.full_name
-
         session["user_email"] = user.email
 
         flash(
@@ -860,13 +784,22 @@ def logout():
     return redirect(
         url_for("main.home")
     )
+
+
 # ============================================================
 # TEMPORARY ADMIN PASSWORD RESET
-# REMOVE THIS ROUTE AFTER RESETTING THE ADMIN PASSWORD
+# ============================================================
+# IMPORTANT:
+# This route is temporary.
+# Remove it after recovering the admin account.
 # ============================================================
 
 @auth_bp.route("/admin-reset", methods=["GET", "POST"])
 def admin_reset():
+
+    admins = User.query.filter_by(
+        role="admin"
+    ).all()
 
     if request.method == "POST":
 
@@ -881,36 +814,42 @@ def admin_reset():
         )
 
         if not email or not new_password:
+
             flash(
                 "Email and password are required.",
                 "danger"
             )
-            return redirect(url_for("auth.admin_reset"))
+
+            return redirect(
+                url_for("auth.admin_reset")
+            )
 
         if len(new_password) < 6:
+
             flash(
                 "Password must contain at least 6 characters.",
                 "danger"
             )
-            return redirect(url_for("auth.admin_reset"))
+
+            return redirect(
+                url_for("auth.admin_reset")
+            )
 
         user = User.query.filter_by(
-            email=email
+            email=email,
+            role="admin"
         ).first()
 
         if not user:
-            flash(
-                "No account was found with that email.",
-                "danger"
-            )
-            return redirect(url_for("auth.admin_reset"))
 
-        if user.role != "admin":
             flash(
-                "This account is not an administrator account.",
+                "No administrator account was found with that email.",
                 "danger"
             )
-            return redirect(url_for("auth.admin_reset"))
+
+            return redirect(
+                url_for("auth.admin_reset")
+            )
 
         user.password_hash = generate_password_hash(
             new_password
@@ -929,6 +868,12 @@ def admin_reset():
             url_for("auth.login")
         )
 
+    admin_emails = [
+        admin.email
+        for admin in admins
+    ]
+
     return render_template(
-        "auth/admin_reset.html"
+        "auth/admin_reset.html",
+        admin_emails=admin_emails
     )

@@ -20,11 +20,43 @@
                             Admin Password Reset
                         </h2>
 
-                        <p class="text-muted mb-0">
-                            Reset the TransLink administrator password.
+                        <p class="text-muted">
+                            Reset the password for an existing administrator.
                         </p>
 
                     </div>
+
+                    {% if admin_emails %}
+
+                        <div class="alert alert-info">
+
+                            <strong>Administrator account found:</strong>
+
+                            <div class="mt-2">
+
+                                {% for email in admin_emails %}
+
+                                    <div>
+                                        {{ email }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="alert alert-warning">
+
+                            No administrator account currently exists
+                            in this database.
+
+                        </div>
+
+                    {% endif %}
+
 
                     <form method="POST">
 
@@ -43,6 +75,7 @@
                             >
 
                         </div>
+
 
                         <div class="mb-4">
 
@@ -64,6 +97,7 @@
                             </div>
 
                         </div>
+
 
                         <button
                             type="submit"
