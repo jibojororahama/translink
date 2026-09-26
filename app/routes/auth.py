@@ -53,102 +53,21 @@ def send_verification_email(email, full_name, code):
             "name": BREVO_SENDER_NAME,
             "email": BREVO_SENDER_EMAIL
         },
-
         "to": [
             {
                 "email": email,
                 "name": full_name
             }
         ],
-
         "subject": "TransLink Email Verification",
-
         "htmlContent": f"""
-        <!DOCTYPE html>
         <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>TransLink Email Verification</title>
-        </head>
-
-        <body style="
-            margin:0;
-            padding:0;
-            background:#f4f7fb;
-            font-family:Arial, Helvetica, sans-serif;
-        ">
-
-            <div style="
-                max-width:600px;
-                margin:40px auto;
-                background:#ffffff;
-                border-radius:14px;
-                padding:35px;
-                box-shadow:0 5px 20px rgba(0,0,0,0.08);
-            ">
-
-                <h2 style="
-                    margin-top:0;
-                    color:#0d6efd;
-                ">
-                    TransLink Email Verification
-                </h2>
-
-                <p>
-                    Hello <strong>{full_name}</strong>,
-                </p>
-
-                <p>
-                    Thank you for registering with TransLink.
-                    Please use the verification code below to
-                    complete your registration.
-                </p>
-
-                <div style="
-                    margin:30px 0;
-                    padding:20px;
-                    background:#f1f5ff;
-                    border-radius:10px;
-                    text-align:center;
-                ">
-
-                    <div style="
-                        font-size:34px;
-                        font-weight:bold;
-                        letter-spacing:8px;
-                        color:#0d6efd;
-                    ">
-                        {code}
-                    </div>
-
-                </div>
-
-                <p>
-                    This verification code will expire in
-                    <strong>10 minutes</strong>.
-                </p>
-
-                <p>
-                    If you did not create a TransLink account,
-                    you can safely ignore this email.
-                </p>
-
-                <hr style="
-                    border:none;
-                    border-top:1px solid #eeeeee;
-                    margin:30px 0;
-                ">
-
-                <p style="
-                    font-size:13px;
-                    color:#777777;
-                ">
-                    TransLink<br>
-                    Connecting Truck Owners with Traders
-                </p>
-
-            </div>
-
+        <body style="font-family:Arial,sans-serif;">
+            <h2>TransLink Email Verification</h2>
+            <p>Hello <strong>{full_name}</strong>,</p>
+            <p>Your TransLink verification code is:</p>
+            <h1>{code}</h1>
+            <p>This code expires in 10 minutes.</p>
         </body>
         </html>
         """
@@ -172,10 +91,7 @@ def send_verification_email(email, full_name, code):
         print("Brevo status:", response.status_code)
         print("Brevo response:", response.text)
 
-        if response.status_code == 201:
-            return True
-
-        return False
+        return response.status_code == 201
 
     except requests.RequestException as error:
 
@@ -186,6 +102,7 @@ def send_verification_email(email, full_name, code):
 
 # ============================================================
 # REGISTER
+# EMAIL VERIFICATION TEMPORARILY DISABLED
 # ============================================================
 
 @auth_bp.route("/register", methods=["GET", "POST"])
@@ -222,6 +139,10 @@ def register():
             "confirm_password",
             ""
         )
+
+        # ----------------------------------------------------
+        # VALIDATION
+        # ----------------------------------------------------
 
         if not full_name or not email or not phone or not role:
 
@@ -267,6 +188,10 @@ def register():
                 "auth/register.html"
             )
 
+        # ----------------------------------------------------
+        # CHECK EXISTING ACCOUNT
+        # ----------------------------------------------------
+
         existing_user = User.query.filter_by(
             email=email
         ).first()
@@ -283,88 +208,57 @@ def register():
                 url_for("auth.login")
             )
 
-        old_verification = (
-            RegistrationVerification.query
-            .filter_by(email=email)
-            .first()
-        )
+        # ----------------------------------------------------
+        # CREATE USER DIRECTLY
+        # ----------------------------------------------------
 
-        if old_verification:
-
-            db.session.delete(old_verification)
-            db.session.commit()
-
-        verification_code = (
-            f"{secrets.randbelow(1000000):06d}"
-        )
-
-        verification = RegistrationVerification(
-
+        user = User(
             full_name=full_name,
-
             email=email,
-
             phone=phone,
-
             role=role,
-
-            password_hash=generate_password_hash(
-                password
-            ),
-
-            code_hash=generate_password_hash(
-                verification_code
-            ),
-
-            expires_at=(
-                datetime.utcnow()
-                + timedelta(minutes=10)
-            ),
-
-            attempts=0
+            password_hash=generate_password_hash(password),
+            is_active=True
         )
 
-        db.session.add(verification)
-
+        db.session.add(user)
         db.session.commit()
 
-        session["pending_verification_id"] = (
-            verification.id
-        )
+        # ----------------------------------------------------
+        # LOGIN USER AUTOMATICALLY
+        # ----------------------------------------------------
 
-        email_sent = send_verification_email(
-            email,
-            full_name,
-            verification_code
-        )
+        session.clear()
 
-        if not email_sent:
-
-            db.session.delete(verification)
-            db.session.commit()
-
-            session.pop(
-                "pending_verification_id",
-                None
-            )
-
-            flash(
-                "We could not send the verification code. "
-                "Please try again later.",
-                "danger"
-            )
-
-            return redirect(
-                url_for("auth.register")
-            )
+        session["logged_in"] = True
+        session["user_id"] = user.id
+        session["user_role"] = user.role
+        session["user_name"] = user.full_name
+        session["user_email"] = user.email
 
         flash(
-            "A verification code has been sent to your email.",
+            "Registration successful. Welcome to TransLink!",
             "success"
         )
 
+        # ----------------------------------------------------
+        # REDIRECT BY ROLE
+        # ----------------------------------------------------
+
+        if user.role == "trader":
+
+            return redirect(
+                url_for("trader.dashboard")
+            )
+
+        if user.role == "owner":
+
+            return redirect(
+                url_for("owner.dashboard")
+            )
+
         return redirect(
-            url_for("auth.verify_email")
+            url_for("main.home")
         )
 
     return render_template(
@@ -374,6 +268,7 @@ def register():
 
 # ============================================================
 # VERIFY EMAIL
+# KEPT FOR FUTURE USE
 # ============================================================
 
 @auth_bp.route("/verify-email", methods=["GET", "POST"])
@@ -408,8 +303,7 @@ def verify_email():
         )
 
         flash(
-            "Verification session has expired. "
-            "Please register again.",
+            "Verification session has expired.",
             "warning"
         )
 
@@ -428,8 +322,7 @@ def verify_email():
         )
 
         flash(
-            "Your verification code has expired. "
-            "Please register again.",
+            "Your verification code has expired.",
             "warning"
         )
 
@@ -467,8 +360,7 @@ def verify_email():
             )
 
             flash(
-                "Too many incorrect attempts. "
-                "Please register again.",
+                "Too many incorrect attempts.",
                 "danger"
             )
 
@@ -485,9 +377,7 @@ def verify_email():
 
             db.session.commit()
 
-            remaining = (
-                5 - verification.attempts
-            )
+            remaining = 5 - verification.attempts
 
             flash(
                 f"Incorrect verification code. "
@@ -524,17 +414,11 @@ def verify_email():
             )
 
         user = User(
-
             full_name=verification.full_name,
-
             email=verification.email,
-
             phone=verification.phone,
-
             role=verification.role,
-
             password_hash=verification.password_hash,
-
             is_active=True
         )
 
@@ -582,6 +466,7 @@ def verify_email():
 
 # ============================================================
 # RESEND VERIFICATION CODE
+# KEPT FOR FUTURE USE
 # ============================================================
 
 @auth_bp.route(
@@ -655,8 +540,7 @@ def resend_verification():
     if not email_sent:
 
         flash(
-            "We could not resend the verification code. "
-            "Please try again later.",
+            "We could not resend the verification code.",
             "danger"
         )
 
