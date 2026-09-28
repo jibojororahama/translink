@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 
+
 db = SQLAlchemy()
 
 
@@ -21,6 +22,7 @@ def create_app():
     from app.routes.bookings import bookings_bp
     from app.routes.notifications import notifications_bp
     from app.routes.profile import profile_bp
+    from app.routes.payments import payments_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
@@ -32,6 +34,7 @@ def create_app():
     app.register_blueprint(bookings_bp)
     app.register_blueprint(notifications_bp)
     app.register_blueprint(profile_bp)
+    app.register_blueprint(payments_bp)
 
     with app.app_context():
         db.create_all()

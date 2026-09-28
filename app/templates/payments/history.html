@@ -1,0 +1,166 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Payment History - TransLink{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+```
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Payment History</h2>
+        <p class="text-muted mb-0">
+            View your transportation payments and transactions.
+        </p>
+    </div>
+
+    <a
+        href="{{ url_for('bookings.my_bookings') }}"
+        class="btn btn-outline-primary"
+    >
+        â† My Bookings
+    </a>
+</div>
+
+{% if payments %}
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+                            <th>Reference</th>
+                            <th>Truck</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for payment in payments %}
+
+                            <tr>
+
+                                <td>
+                                    <span class="fw-semibold">
+                                        {{ payment.reference }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {% if payment.booking and payment.booking.truck %}
+                                        {{ payment.booking.truck.truck_name }}
+                                    {% else %}
+                                        â€”
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        NGN {{ "{:,.2f}".format(payment.amount) }}
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    {{ payment.payment_method or "â€”" }}
+                                </td>
+
+                                <td>
+
+                                    {% if payment.status == "Paid" %}
+
+                                        <span class="badge bg-success">
+                                            Paid
+                                        </span>
+
+                                    {% elif payment.status == "Pending" %}
+
+                                        <span class="badge bg-warning text-dark">
+                                            Pending
+                                        </span>
+
+                                    {% elif payment.status == "Failed" %}
+
+                                        <span class="badge bg-danger">
+                                            Failed
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-secondary">
+                                            {{ payment.status }}
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+                                    {% if payment.paid_at %}
+                                        {{ payment.paid_at.strftime("%d %b %Y, %I:%M %p") }}
+                                    {% else %}
+                                        {{ payment.created_at.strftime("%d %b %Y, %I:%M %p") }}
+                                    {% endif %}
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% else %}
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body text-center py-5">
+
+            <div class="mb-3">
+                <i class="bi bi-credit-card fs-1 text-muted"></i>
+            </div>
+
+            <h4 class="fw-bold">
+                No Payments Yet
+            </h4>
+
+            <p class="text-muted">
+                Your completed and pending payments will appear here.
+            </p>
+
+            <a
+                href="{{ url_for('bookings.my_bookings') }}"
+                class="btn btn-primary"
+            >
+                View My Bookings
+            </a>
+
+        </div>
+
+    </div>
+
+{% endif %}
+```
+
+</div>
+
+{% endblock %}
+

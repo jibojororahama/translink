@@ -1,0 +1,98 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Payment Successful - TransLink{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+```
+<div class="row justify-content-center">
+
+    <div class="col-lg-6 col-md-8">
+
+        <div class="card border-0 shadow-sm text-center">
+
+            <div class="card-body p-5">
+
+                <div class="mb-4">
+                    <div
+                        class="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center"
+                        style="width: 80px; height: 80px;"
+                    >
+                        <i class="bi bi-check-lg fs-1"></i>
+                    </div>
+                </div>
+
+                <h2 class="fw-bold text-success">
+                    Payment Successful
+                </h2>
+
+                <p class="text-muted">
+                    Your transportation payment has been successfully
+                    verified by Paystack.
+                </p>
+
+                <div class="bg-light rounded p-4 my-4 text-start">
+
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Truck</span>
+                        <strong>
+                            {{ booking.truck.truck_name }}
+                        </strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Amount</span>
+                        <strong>
+                            NGN {{ "{:,.2f}".format(payment.amount) }}
+                        </strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Reference</span>
+                        <strong class="small">
+                            {{ payment.reference }}
+                        </strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Status</span>
+                        <span class="badge bg-success">
+                            Paid
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="d-grid gap-2">
+
+                    <a
+                        href="{{ url_for('payments.payment_history') }}"
+                        class="btn btn-primary"
+                    >
+                        View Payment History
+                    </a>
+
+                    <a
+                        href="{{ url_for('bookings.my_bookings') }}"
+                        class="btn btn-outline-secondary"
+                    >
+                        Back to My Bookings
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}
+

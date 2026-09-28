@@ -365,6 +365,13 @@ class Booking(db.Model):
         nullable=False
     )
 
+    # Transportation fare in Nigerian Naira
+    fare = db.Column(
+        db.Float,
+        nullable=False,
+        default=0.0
+    )
+
     status = db.Column(
         db.String(30),
         default="Pending",

@@ -1,0 +1,203 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Make Payment - TransLink{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7 col-md-9">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="text-center mb-4">
+
+                        <h2 class="fw-bold">
+                            Complete Your Payment
+                        </h2>
+
+                        <p class="text-muted mb-0">
+                            Secure payment for your transportation booking
+                        </p>
+
+                    </div>
+
+
+                    <div class="bg-light rounded p-4 mb-4">
+
+                        <h5 class="fw-bold mb-3">
+                            Booking Details
+                        </h5>
+
+                        <div class="row g-3">
+
+                            <div class="col-sm-6">
+                                <small class="text-muted">
+                                    Truck
+                                </small>
+
+                                <div class="fw-semibold">
+                                    {{ booking.truck.truck_name }}
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <small class="text-muted">
+                                    Truck Type
+                                </small>
+
+                                <div class="fw-semibold">
+                                    {{ booking.truck.truck_type }}
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <small class="text-muted">
+                                    Pickup Location
+                                </small>
+
+                                <div class="fw-semibold">
+                                    {{ booking.transport_request.pickup_location }}
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <small class="text-muted">
+                                    Destination
+                                </small>
+
+                                <div class="fw-semibold">
+                                    {{ booking.transport_request.destination }}
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <small class="text-muted">
+                                    Goods
+                                </small>
+
+                                <div class="fw-semibold">
+                                    {{ booking.transport_request.goods_type }}
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+
+                                <small class="text-muted">
+                                    Booking Status
+                                </small>
+
+                                <div>
+
+                                    <span class="badge bg-success">
+                                        {{ booking.status }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="text-center border rounded p-4 mb-4">
+
+                        <small class="text-muted d-block mb-2">
+                            Transportation Fare
+                        </small>
+
+                        <h1 class="fw-bold mb-0">
+                            NGN {{ "{:,.2f}".format(booking.fare) }}
+                        </h1>
+
+                    </div>
+
+
+                    {% if payment and payment.status == "Pending" %}
+
+                        <div class="alert alert-warning">
+
+                            <strong>
+                                Payment initiated.
+                            </strong>
+
+                            If you did not complete the previous payment,
+                            you can try again below.
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <div class="alert alert-info">
+
+                        <strong>
+                            Secure Payment
+                        </strong>
+
+                        <p class="mb-0 mt-1">
+
+                            You will be redirected to Paystack's secure
+                            payment page to complete your transaction.
+
+                        </p>
+
+                    </div>
+
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'payments.initialize_payment',
+                            booking_id=booking.id
+                        ) }}"
+                    >
+
+                        <button
+                            type="submit"
+                            class="btn btn-success btn-lg w-100"
+                        >
+
+                            <i class="bi bi-credit-card me-2"></i>
+
+                            Pay NGN {{ "{:,.2f}".format(booking.fare) }}
+
+                        </button>
+
+                    </form>
+
+
+                    <div class="text-center mt-3">
+
+                        <a
+                            href="{{ url_for('bookings.my_bookings') }}"
+                            class="text-decoration-none"
+                        >
+                            ← Back to My Bookings
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

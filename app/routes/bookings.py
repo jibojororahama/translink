@@ -4,7 +4,8 @@ from flask import (
     redirect,
     url_for,
     session,
-    flash
+    flash,
+    request
 )
 
 from app import db
@@ -15,7 +16,6 @@ from app.models import (
     TruckMatch,
     Notification
 )
-
 
 bookings_bp = Blueprint(
     "bookings",
@@ -29,21 +29,15 @@ def logged_in():
 
 
 def trader_required():
-    return (
-        logged_in()
-        and session.get("user_role") == "trader"
-    )
+    return logged_in() and session.get("user_role") == "trader"
 
 
 def owner_required():
-    return (
-        logged_in()
-        and session.get("user_role") == "owner"
-    )
+    return logged_in() and session.get("user_role") == "owner"
 
 
 # ============================================================
-# TRADER: CREATE BOOKING
+# CREATE BOOKING REQUEST
 # ============================================================
 
 @bookings_bp.route(
@@ -108,10 +102,9 @@ def create_booking(request_id, truck_id):
             truck_id=truck_id
         )
         .filter(
-            Booking.status.in_([
-                "Pending",
-                "Accepted"
-            ])
+            Booking.status.in_(
+                ["Pending", "Accepted"]
+            )
         )
         .first()
     )
@@ -130,6 +123,7 @@ def create_booking(request_id, truck_id):
         trader_id=session["user_id"],
         truck_id=truck_id,
         owner_id=truck.owner_id,
+        fare=0.0,
         status="Pending"
     )
 
@@ -150,7 +144,6 @@ def create_booking(request_id, truck_id):
     )
 
     db.session.add(notification)
-
     db.session.commit()
 
     flash(
@@ -164,7 +157,7 @@ def create_booking(request_id, truck_id):
 
 
 # ============================================================
-# TRADER: MY BOOKINGS
+# TRADER BOOKINGS
 # ============================================================
 
 @bookings_bp.route("/my-bookings")
@@ -195,7 +188,7 @@ def my_bookings():
 
 
 # ============================================================
-# OWNER: BOOKING REQUESTS
+# OWNER BOOKING REQUESTS
 # ============================================================
 
 @bookings_bp.route("/owner-requests")
@@ -232,7 +225,7 @@ def owner_requests():
 
 
 # ============================================================
-# OWNER: ACCEPT BOOKING
+# ACCEPT BOOKING
 # ============================================================
 
 @bookings_bp.route(
@@ -279,13 +272,60 @@ def accept_booking(booking_id):
             url_for("bookings.owner_requests")
         )
 
+    # --------------------------------------------------------
+    # GET FARE
+    # --------------------------------------------------------
+
+    fare_value = request.form.get(
+        "fare",
+        ""
+    ).strip()
+
+    if not fare_value:
+        flash(
+            "Please enter the transportation fare.",
+            "warning"
+        )
+        return redirect(
+            url_for("bookings.owner_requests")
+        )
+
+    try:
+        fare = float(fare_value)
+    except ValueError:
+        flash(
+            "Please enter a valid fare amount.",
+            "danger"
+        )
+        return redirect(
+            url_for("bookings.owner_requests")
+        )
+
+    if fare <= 0:
+        flash(
+            "Transportation fare must be greater than ₦0.",
+            "danger"
+        )
+        return redirect(
+            url_for("bookings.owner_requests")
+        )
+
+    # --------------------------------------------------------
+    # ACCEPT BOOKING
+    # --------------------------------------------------------
+
+    booking.fare = fare
     booking.status = "Accepted"
 
     booking.truck.availability = "Booked"
 
     booking.transport_request.status = "Accepted"
 
-    # Reject other pending requests for this same truck
+    # --------------------------------------------------------
+    # REJECT OTHER PENDING REQUESTS
+    # FOR THE SAME TRUCK
+    # --------------------------------------------------------
+
     other_bookings = (
         Booking.query
         .filter(
@@ -310,7 +350,13 @@ def accept_booking(booking_id):
             notification_type="booking"
         )
 
-        db.session.add(other_notification)
+        db.session.add(
+            other_notification
+        )
+
+    # --------------------------------------------------------
+    # NOTIFY TRADER
+    # --------------------------------------------------------
 
     notification = Notification(
         user_id=booking.trader_id,
@@ -318,7 +364,9 @@ def accept_booking(booking_id):
         message=(
             f"Your request for "
             f"{booking.truck.truck_name} "
-            f"has been accepted by the truck owner."
+            f"has been accepted. "
+            f"Transportation fare: "
+            f"₦{booking.fare:,.2f}."
         ),
         notification_type="booking"
     )
@@ -328,7 +376,7 @@ def accept_booking(booking_id):
     db.session.commit()
 
     flash(
-        "Booking accepted successfully.",
+        "Booking accepted and fare set successfully.",
         "success"
     )
 
@@ -338,7 +386,7 @@ def accept_booking(booking_id):
 
 
 # ============================================================
-# OWNER: REJECT BOOKING
+# REJECT BOOKING
 # ============================================================
 
 @bookings_bp.route(
@@ -406,7 +454,7 @@ def reject_booking(booking_id):
 
 
 # ============================================================
-# TRADER: CANCEL BOOKING
+# CANCEL BOOKING
 # ============================================================
 
 @bookings_bp.route(
